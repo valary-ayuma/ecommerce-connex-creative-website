@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In - Connex Creative</title>
+    <link rel="stylesheet" href="style.css">
+     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    
+</head>
+    <style>
+        /* Basic styling for clarity */
+        body { font-family: sans-serif; margin: 20px; }
+        .form-container { max-width: 400px; margin: 50px auto; padding: 20px; border: 1px solid #ccc; border-radius: 8px; }
+        input { width: 100%; padding: 10px; margin-bottom: 15px; box-sizing: border-box; }
+        button { background-color: #007bff; color: white; padding: 10px 15px; border: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+        <header class="navbar">
+    <div class="logo">
+        <a href="index.html" class="logo">
+                <img src="logo.png"alt="connex creative logo">
+    </a>
+    </div>
+    <nav class="main-nav">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="product.html">Products</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+        </ul>
+    </nav>
+    <div class="utility-icons">
+        <a href="signin.html" class="sign-in-link">
+            <span class="icon-placeholder">👤</span> Sign in
+        </a>
+        <a href="cart.html" class="cart-link">
+            <span class="icon-placeholder cart-icon">🛒</span>
+            <span class="cart-count">0</span>
+        </a>
+    </div>
+</header>
+
+    <main>
+        <div class="form-container">
+            <h2>Sign In to Your Account</h2>
+            
+            <form id="signInForm">
+                <label for="email">Email:</label>
+                <input type="email" id="email" required>
+                
+                <label for="password">Password:</label>
+                <input type="password" id="password" required>
+                
+                <button type="submit">Sign In</button>
+            </form>
+            
+            <p id="message" style="margin-top: 15px;"></p>
+            
+            <p>Don't have an account? <a href="signup.html">Sign Up</a></p>
+            <p>You can still <a href="index.html">continue shopping</a> without signing in.</p>
+        </div>
+    </main>
+    
+    <script>
+        const messageElement = document.getElementById('message');
+        const signInForm = document.getElementById('signInForm');
+        
+        // Function to check if the user is already signed in (Auto-Login Check)
+        function checkLoginStatus() {
+            const token = localStorage.getItem('authToken');
+            if (token) {
+                messageElement.style.color = 'blue';
+                messageElement.textContent = 'You are already signed in. Redirecting to home...';
+                
+                // Redirect after a short delay
+                setTimeout(() => {
+                    window.location.href = 'index.html'; 
+                }, 1500); 
+                return true;
+            }
+            return false;
+        }
+
+        // Run check on page load
+        if (checkLoginStatus()) {
+            // If already logged in, stop script execution here
+            signInForm.style.display = 'none';
+        }
+
+
+        // Event Listener for the form submission
+        signInForm.addEventListener('submit', async (e) => {
+            e.preventDefault(); 
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            messageElement.textContent = ''; // Clear previous messages
+
+            try {
+                // Send credentials to the Node.js API
+                const response = await fetch('http://localhost:3001/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Sign-in success! This is where persistent login is achieved.
+                    localStorage.setItem('authToken', data.token);
+                    localStorage.setItem('userId', data.userId);
+                    localStorage.setItem('userName', data.userName); // Store the name for display
+
+                    messageElement.style.color = 'green';
+                    messageElement.textContent = data.message + ' Welcome back! Redirecting...';
+
+                    setTimeout(() => {
+                        window.location.href = 'index.html'; 
+                    }, 1500); 
+                    
+                } else {
+                    // Sign-in failed (Invalid credentials or other error)
+                    messageElement.style.color = 'red';
+                    messageElement.textContent = data.message || 'Login failed. Check server connection.';
+                }
+            } catch (error) {
+                console.error('Fetch error:', error);
+                messageElement.style.color = 'red';
+                messageElement.textContent = 'Network error. Could not connect to the API server.';
+            }
+        });
+    </script>
+</body>
+</html>

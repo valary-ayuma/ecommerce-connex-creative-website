@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Connex Creative | B2B Design Solutions</title>
+    <meta name="description" content="Your B2B partner, for premuim customized promotional merchandise from stationary to attire .">   
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <script src="header.js"></script>
+</head>
+<body>
+    <header class="navbar">
+    <div class="logo">
+        <a href="index.html" class="logo">
+                <img src="logo.png"alt="connex creative logo">
+    </a>
+    </div>
+    <nav class="main-nav">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="product.html">Products</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+    </nav>
+    <div class="utility-icons">
+        <a href="signin.html" class="sign-in-link">
+            <span class="icon-placeholder">👤</span> Sign in
+        </a>
+        <a href="cart.html" class="cart-link">
+            <span class="icon-placeholder cart-icon">🛒</span>
+            <span class="cart-count">0</span>
+        </a>
+    </div>
+</header>
+ <main>
+        <!-- About Hero Section -->
+        <section class="about-hero">
+            <div class="container">
+                <h1 class="font-serif">
+                    Creating Connections, Building Brands.
+                </h1>
+                <p>
+                    Connex Creative is your dedicated B2B partner, specializing in custom promotional merchandise and design solutions that elevate your corporate identity and leave a lasting impression.
+                </p>
+            </div>
+        </section>
+
+        <!-- Our Story and Picture Section (Grid Layout) -->
+        <section class="story-section">
+            <div class="container story-grid">
+                
+                <!-- Story Content -->
+                <div class="story-content">
+                    <h2>Our Origin and Mission</h2>
+                    
+                    <p>
+                        In a crowded marketplace, standing out requires more than just a logo—it requires a tangible connection. Connex Creative was founded on the belief that premium, customized merchandise is the most powerful physical link between a brand and its audience. We moved beyond simple screen-printing to focus on delivering design solutions that are as strategic as they are stylish.
+                    </p>
+                    <p>
+                        Our B2B focus means we understand corporate budgets, deadlines, and quality control. We don't just sell products; we manage campaigns, from initial design concepts to final delivery, ensuring every piece of stationery, attire, or custom gift perfectly reflects your corporate standards.
+                    </p>
+                    <h2> Our Mission</h2>
+                    <p>To transform promotional products from simple giveaways into high-impact, brand-building assets for businesses globally.
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Core Values Section (Circular Layout) -->
+        <section class="values-section">
+            <div class="container">
+                <h2>Our Core Philosophy</h2>
+                
+                <div class="values-grid">
+                    
+                    <!-- Value 1: Quality -->
+                    <div class="value-item-wrapper">
+                        <div class="value-item">
+                            <span class="value-icon">✨</span>
+                            <h3>Uncompromising Quality</h3>
+                            <p>Every product, from a custom pen to bespoke corporate attire, meets stringent quality standards suitable for enterprise clients.</p>
+                        </div>
+                    </div>
+
+                    <!-- Value 2: Partnership -->
+                    <div class="value-item-wrapper">
+                        <div class="value-item">
+                            <span class="value-icon">🤝</span>
+                            <h3>Dedicated Partnership</h3>
+                            <p>We operate as an extension of your marketing team, providing strategic advice and seamless execution from concept to fulfillment.</p>
+                        </div>
+                    </div>
+
+                    <!-- Value 3: Innovation -->
+                    <div class="value-item-wrapper">
+                        <div class="value-item">
+                            <span class="value-icon">💡</span>
+                            <h3>Creative Innovation</h3>
+                            <p>We constantly source new, sustainable, and memorable products to keep your brand at the forefront of promotional trends.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Value 4: Reliability -->
+                    <div class="value-item-wrapper">
+                        <div class="value-item">
+                            <span class="value-icon">⚙️</span>
+                            <h3>Operational Reliability</h3>
+                            <p>B2B success is built on trust and delivery. We guarantee timely production and reliable logistics, every time.</p>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </section>
+
+    </main>
+    <!-- FOOTER START - Copied from index.html to maintain consistency -->
+    <footer>
+         <div class="footer-links">
+            <a href="privacy.html">Privacy Policy</a>
+            <span class="link-separator">|</span>
+            <a href="terms.html">Terms of Service</a>
+        </div>
+        <p>&copy; <span id="currentYearFooter"></span> Connex Creative.</p>
+       
+    </footer>
+    
+    <script>
+        // Update year in footer
+        document.getElementById('currentYearFooter').textContent = new Date().getFullYear();
+        
+        // This is necessary because fixed headers require main content to be pushed down
+        const headerHeight = document.querySelector('header').offsetHeight;
+        document.querySelector('.legal-page-main').style.paddingTop = `${headerHeight + 20}px`;
+    </script>
+    <!-- FOOTER END -->
+</body>
+</html>

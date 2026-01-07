@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connex Creative | Branded Notebook</title>
+    <meta name="description" content="E-commerce home page design replica.">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
+    <script src="header.js"></script>
+    <style>
+        /* --- CSS Styles for Enhanced Product Page Appearance (Copied from bag.html) --- */
+        :root {
+            --primary-color: #5d2595; /* Defining primary color for reusability */
+        }
+        .product-info { font-family: 'Open Sans', sans-serif; }
+        .product-title { font-family: 'Playfair Display', serif; font-size: 2.2em; color: #2c3e50; }
+        .bulk-pricing { border: 1px solid #e0e0e0; border-radius: 8px; padding: 15px; background-color: #fafafa; margin-bottom: 25px; }
+        .pricing-table th, .pricing-table td { padding: 8px 10px; text-align: left; border-bottom: 1px solid #f1f1f1; }
+        .pricing-table thead th { font-weight: 700; color: var(--primary-color); }
+        .order-section { padding-top: 20px; border-top: 1px solid #ddd; }
+        .input-group label { font-weight: 600; color: #333; display: block; margin-bottom: 5px; }
+        .quantity-input, .color-select-input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 1em; box-sizing: border-box; }
+        .unit-price { display: flex; justify-content: space-between; margin-top: 15px; padding: 8px 0; border-bottom: 1px dashed #e9e9e9; }
+        .unit-price span { font-size: 1.1em; }
+        .unit-price .starting-price { font-weight: 700; color: #555; }
+        .total-cost { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; padding: 15px; background-color: #f0f8ff; border-radius: 8px; border: 1px solid #d0e7ff; }
+        .total-cost span { font-size: 1.2em; font-weight: 600; }
+        .total-cost-amount { 
+            font-size: 1.8em !important; 
+            font-family: 'Playfair Display', serif; 
+            color: var(--primary-color); 
+            font-weight: 700; 
+        }
+        .btn { display: block; text-align: center; padding: 15px 20px; margin-top: 15px; text-decoration: none; border-radius: 8px; font-weight: 600; transition: all 0.3s ease; width: 100%; }
+        .btn-primary { background-color: var(--primary-color); color: white; border: none; box-shadow: 0 6px 15px rgba(93, 37, 149, 0.4); }
+        .btn-primary:hover { background-color: #4a1e78; box-shadow: 0 8px 20px rgba(93, 37, 149, 0.5); transform: translateY(-2px); }
+        .btn-secondary { background-color: white; color: var(--primary-color); border: 2px solid var(--primary-color); box-shadow: none; }
+        .btn-secondary:hover { background-color: #f0f0f0; color: #4a1e78; border-color: #4a1e78; }
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+    <div class="logo">
+        <a href="index.html" class="logo">
+            <img src="logo.png"alt="connex creative logo">
+    </a>
+    </div>
+    <nav class="main-nav">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="product.html">Products</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+        </ul>
+    </nav>
+    <div class="utility-icons">
+        <a href="signin.html" class="sign-in-link">
+            <span class="icon-placeholder">👤</span> Sign in
+        </a>
+        <a href="cart.html" class="cart-link">
+            <span class="icon-placeholder cart-icon">🛒</span>
+            <span class="cart-count">0</span>
+        </a>
+    </div>
+</header>
+    <div class="product-detail-container">
+        <div class="product-media">
+            <div class="product-media-mockup">
+                <div class="logo-placeholder">Upload Your Logo Here</div>
+            </div>
+
+            <div class="specifications">
+                <h3>Product Specifications</h3>
+                <p><strong>Material(cover):</strong> <span>Hardbound Recycled Cardboard </span></p>
+                <p><strong>Material(pages):</strong> <span>80 GSM Cream/White Lined Paper </span></p>
+                <p><strong>Sheets:</strong> <span>100 sheets/200 pages</span></p>
+                <p><strong>Sizes:</strong> <span>A5(approx.5.8" x 8.3")</span></p>
+                <p><strong>Colors:</strong> <span>Black, Navy, White, Grey,</span></p>
+                <p><strong>Branding Area:</strong> <span>Front Cover (approx. 4" x 6")</span></p>
+                
+            </div>
+        </div>
+
+        <div class="product-info">
+            <h1 class="product-title">Branded Notebook</h1>
+            <p class="product-subtitle">Elevate your corporate image with this essential A5 notebook.</p>
+
+            <div class="bulk-pricing">
+                <h4><span style="font-size: 1.4em;">$</span> Bulk Pricing (KES)</h4>
+                <table class="pricing-table">
+                    <thead>
+                        <tr>
+                            <th>Units</th>
+                            <th>Price/Unit</th>
+                            <th>Total (Max)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1 - 50</td>
+                            <td>KES 350</td>
+                            <td>KES 17,500</td>
+                        </tr>
+                        <tr>
+                            <td>51 - 200</td>
+                            <td>KES 310</td>
+                            <td>KES 62,000</td>
+                        </tr>
+                        <tr>
+                            <td>201 - 500</td>
+                            <td>KES 280</span></td>
+                            <td>KES 140,000</td>
+                        </tr>
+                        <tr>
+                            <td>501+</td>
+                            <td>KES 250</td>
+                            <td>Custom</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="order-section">
+                <div class="input-group">
+                    <label for="colorSelect">Product Color</label>
+                    <select id="colorSelect" class="color-select-input">
+                        <option value="Black" selected>Black</option>
+                        <option value="Navy">Navy</option>
+                        <option value="White">White</option>
+                        <option value="Grey">Grey</option>
+                        <option value="Red">Red</option>
+                        <option value="Blue">Blue</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="quantity">Quantity (Minimum 1 Unit)</label>
+                    <div class="quantity-input-wrapper">
+                        <input type="number" id="quantity" class="quantity-input" value="100" min="1">
+                    </div>
+                </div>
+
+                <div class="unit-price">
+                    <span>Current Unit Price:</span>
+                    <span class="starting-price">KES 310</span>
+                </div>
+
+                <div class="total-cost">
+                    <span>Total Estimated Cost:</span>
+                    <span class="total-cost-amount">KES 31,000</span>
+                </div>
+            </div>
+
+            <a href="customize_order.html" class="btn btn-primary" id="customize-order-btn">Customize & Order (KES 31,000)</a>
+            <a href="request_quote.html" class="btn btn-secondary"><span>&#9734;</span> Request Custom Bulk Quote</a>
+        </div>
+    </div>
+<footer>
+        <div class="footer-links">
+            <a href="privacy.html">Privacy Policy</a>
+            <span class="link-separator">|</span>
+            <a href="terms.html">Terms of Service</a>
+        </div>
+        <p>&copy; <span id="currentYearFooter">2025</span> Connex Creative.</p>
+    </footer>
+    <script>
+        // Update year in footer
+        document.getElementById('currentYearFooter').textContent = new Date().getFullYear();
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const quantityInput = document.getElementById('quantity');
+            const unitPriceDisplay = document.querySelector('.unit-price .starting-price');
+            const totalCostDisplay = document.querySelector('.total-cost-amount');
+            const customizeButton = document.getElementById('customize-order-btn');
+            const colorSelect = document.getElementById('colorSelect'); // ADDED: Selector for color
+
+            // Define the pricing tiers for the NOTEBOOK
+            const pricingTiers = [
+                { max: 50, price: 350 },
+                { max: 200, price: 310 },
+                { max: 500, price: 280 },
+                { max: Infinity, price: 250 } // Tier for 501+
+            ];
+
+            function formatKES(amount) {
+                // Formats numbers with commas and prepends 'KES '
+                if (typeof amount !== 'number') return amount;
+                // MODIFIED: Ensure proper formatting without unnecessary trailing zeros
+                return `KES ${amount.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
+            }
+
+            function calculatePrice(quantity) {
+                // Find the correct tier
+                const tier = pricingTiers.find(t => quantity <= t.max);
+                
+                // Special handling for the 501+ tier 
+                if (quantity > 500) {
+                    const unitPrice = 250; 
+                    return { 
+                        unitPrice: unitPrice, 
+                        totalCostRaw: null, // ADDED: raw value for price calculation on next page
+                        totalCostText: 'Custom Quote',
+                        buttonText: 'Request Custom Bulk Quote'
+                    };
+                }
+
+                if (tier) {
+                    const unitPrice = tier.price;
+                    const totalCost = quantity * unitPrice;
+                    return { 
+                        unitPrice: unitPrice, 
+                        totalCostRaw: totalCost, // ADDED: raw value for price calculation on next page
+                        totalCostText: formatKES(totalCost),
+                        buttonText: `Customize & Order (${formatKES(totalCost)})`
+                    };
+                }
+                
+                // Fallback 
+                return { 
+                    unitPrice: 350, 
+                    totalCostRaw: quantity * 350, // Added fallback raw cost
+                    totalCostText: 'N/A', 
+                    buttonText: 'Customize & Order'
+                };
+            }
+
+            function updateOrderSummary() {
+                let quantity = parseInt(quantityInput.value, 10);
+                
+                // Clamp quantity to minimum (1) and handle non-numeric input gracefully
+                if (isNaN(quantity) || quantity < 1) {
+                    quantity = 1;
+                    quantityInput.value = 1;
+                }
+
+                const result = calculatePrice(quantity);
+
+                // Update the display elements
+                unitPriceDisplay.textContent = formatKES(result.unitPrice);
+                totalCostDisplay.textContent = result.totalCostText;
+                customizeButton.textContent = result.buttonText;
+                
+                // --- Prepare data for the customize page (Copied from bag.html) ---
+                const selectedColor = colorSelect.value;
+                const productName = document.querySelector('.product-title').textContent.trim();
+                
+                // Use the unitPrice and the raw total cost for URL parameters
+                let href = `customize_order.html?product=${encodeURIComponent(productName)}&qty=${quantity}&price=${result.unitPrice}&color=${selectedColor}`;
+                
+                // Update button href for customization page
+                customizeButton.href = href;
+
+
+                // Special visual handling for 501+ (Copied from bag.html)
+                if (quantity > 500) {
+                     totalCostDisplay.style.color = 'gray';
+                     customizeButton.classList.remove('btn-primary');
+                     customizeButton.classList.add('btn-secondary');
+                     customizeButton.style.border = 'none';
+                     customizeButton.style.boxShadow = 'none';
+                     customizeButton.href = 'request_quote.html'; // Direct to quote page
+                } else {
+                     totalCostDisplay.style.color = 'var(--primary-color)';
+                     customizeButton.classList.add('btn-primary');
+                     customizeButton.classList.remove('btn-secondary');
+                     // Re-apply primary button box-shadow style for consistency
+                     customizeButton.style.boxShadow = '0 6px 15px rgba(93, 37, 149, 0.4)'; 
+                     // Ensure the standard customize order link is restored
+                     customizeButton.href = href;
+                }
+            }
+
+            // Add event listener to recalculate price on input change
+            quantityInput.addEventListener('input', updateOrderSummary);
+            // ADDED: Event listener for color selection (copied from bag.html)
+            colorSelect.addEventListener('change', updateOrderSummary);
+            
+            // Initial run to set the correct price based on the default value (100)
+            updateOrderSummary();
+        });
+    </script>
+</body>
+</html>

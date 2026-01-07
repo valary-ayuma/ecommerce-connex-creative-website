@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connex Creative | B2B Design Solutions</title>>
+    <meta name="description" content="E-commerce home page design replica.">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
+     <script src="header.js"></script>
+    </head>
+<body>
+
+    <header class="navbar">
+    <div class="logo">
+        <a href="index.html" class="logo">
+                <img src="logo.png"alt="connex creative logo">
+    </a>
+    </div>
+    <nav class="main-nav">
+        <ul>
+            <li><a href="product.html">Products</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+        </ul>
+    </nav>
+    <div class="utility-icons">
+        <a href="signin.html" class="sign-in-link">
+            <span class="icon-placeholder">👤</span> Sign in
+        </a>
+        <a href="cart.html" class="cart-link">
+            <span class="icon-placeholder cart-icon">🛒</span>
+            <span class="cart-count">0</span>
+        </a>
+    </div>
+</header>
+    
+    <main class="content-container">
+
+        <section class="hero-banner">
+    <div class="banner-overlay">
+        
+        <h1 class="blackout-title">BLACKOUT<br>NOVEMBER</h1>
+        <p class="blackout-promo">10% OFF ONLINE ORDERS<br>AND FREE NAIROBI DELIVERY</p>
+        <div class="code-box">
+            CODE: **BLACKOUT25**
+        </div>
+         <a href="product.html">
+                <button class="big-button">SHOP NOW</button>
+            </a>
+    </div>
+    
+    <img src="shirt.png" alt="Blackout November Sale Slide 1" class="banner-image">
+    <img src="book.png" alt="Blackout November Sale Slide 2" class="banner-image">
+    <img src="bottle.png" alt="Blackout November Sale Slide 3" class="banner-image">
+    <img src="bag.png" alt="Blackout November Sale Slide 4" class="banner-image">
+    <img src="hoodie.png" alt="Blackout November Sale Slide 5" class="banner-image">
+    
+</section>
+
+        <section class="category-grid-1">
+            <div class="category-card" style="--bg-image: url('cape.png');">
+                <h2 class="category-title">Branded Cape</h2>
+            </div>
+            <div class="category-card" style="--bg-image: url('cup.png');">
+                <h2 class="category-title">Branded Cup</h2>
+            </div>
+            <div class="category-card" style="--bg-image: url('umbrella.png');">
+                <h2 class="category-title">Branded Umbrella</h2>
+            </div>
+        </section>
+
+        <section class="latest-products-header">
+            <div class="gradient-line"></div>
+            <h3>Latest Products</h3>
+            <div class="gradient-line"></div>
+        </section>
+
+        <section class="product-carousel">
+            <button class="carousel-arrow left-arrow">‹</button>
+            <div class="product-list">
+
+
+            <a href="calender.html" class="product-card">
+               <div class="product-item">
+                    <img src="calender.png" alt="Branded Calender" class="product-img">
+                    <p>Branded Calender</p>
+                    <p class="starting-price">From KSH 400.00</p>
+                </div> 
+                
+            </a>
+                <a href="mug.html" class="product-card">
+               <div class="product-item">
+                    <img src="mug.png" alt="Branded Mug" class="product-img">
+                    <p>Branded Mug</p>
+                    <p class="starting-price">From KSH 200.00</p>
+                </div> 
+                
+            </a>
+                <a href="bracelet.html" class="product-card">
+               <div class="product-item">
+                    <img src="bracelet.png" alt="Branded Bracelet" class="product-img">
+                    <p>Branded Bracelet</p>
+                    <p class="starting-price">From KSH 50.00</p>
+                </div> 
+                
+           <a href="pen.html" class="product-card">
+               <div class="product-item">
+                    <img src="pen.png" alt="Branded Pen" class="product-img">
+                    <p>Branded Pen</p>
+                    <p class="starting-price">From KSH 50.00</p>
+                </div> 
+                
+            </a>
+            <button class="carousel-arrow right-arrow">›</button>
+        </section>
+
+        <section class="category-grid-2">
+            <div class="category-card" style="--bg-image: url('hoodie.png');">
+                <h2 class="category-title"> Branded Hoodies</h2>
+            </div>
+            <div class="category-card" style="--bg-image: url('bottle2.png');">
+                <h2 class="category-title">Branded Bottle</h2>
+            </div>
+            <div class="category-card" style="--bg-image: url('bag.png');">
+                <h2 class="category-title">Branded Bag</h2>
+            </div>
+        </section>
+        
+    </main>
+
+    <footer>
+        <div class="footer-links">
+            <a href="privacy.html">Privacy Policy</a>
+            <span class="link-separator">|</span>
+            <a href="terms.html">Terms of Service</a>
+        </div>
+        <p>&copy; <span id="currentYearFooter">2025</span> Connex Creative.</p>
+    </footer>
+    <script>
+        // Update year in footer
+        document.getElementById('currentYearFooter').textContent = new Date().getFullYear();
+    </script>
+    <script>
+    
+    // --- 1. Hero Banner Slideshow (3-Second Loop) ---
+    const SLIDESHOW_DURATION_MS = 3000; // 3 seconds per slide (3000ms)
+    let slideIndex = 0;
+    // CRITICAL: This selects all 5 images we added in the HTML
+    const slides = document.querySelectorAll('.banner-image'); 
+    
+    // Function to show the current slide
+    function showSlides(n) {
+        let i;
+        
+        // Hide all slides (opacity 0)
+        for (i = 0; i < slides.length; i++) {
+            slides[i].style.opacity = '0';
+            slides[i].style.zIndex = '1';
+        }
+
+        // Calculate the new index, ensuring it wraps around (0, 1, 2, 3, 4, then back to 0)
+        if (n >= slides.length) {
+            slideIndex = 0;
+        } else if (n < 0) {
+            slideIndex = slides.length - 1;
+        } else {
+            slideIndex = n;
+        }
+
+        // Show the new slide on top (opacity 1)
+        slides[slideIndex].style.opacity = '1';
+        slides[slideIndex].style.zIndex = '2';
+    }
+
+    // Advances the slideshow automatically
+    function plusSlides() {
+        slideIndex++;
+        showSlides(slideIndex);
+    }
+
+    // Start the automatic timer on page load
+    window.onload = function() {
+        if (slides.length > 0) {
+            showSlides(slideIndex); // Show the first slide (image 1)
+            // Start the automatic slideshow timer
+            setInterval(plusSlides, SLIDESHOW_DURATION_MS);
+        }
+
+        // Initialize Carousel (Product Section)
+        initProductCarousel();
+    };
+
+    // --- 2. Latest Products Carousel Functionality (Arrow Clicks) ---
+    // (Kept for completeness, assuming you need this too)
+    function initProductCarousel() {
+        const productList = document.querySelector('.product-list');
+        const leftArrow = document.querySelector('.left-arrow');
+        const rightArrow = document.querySelector('.right-arrow');
+        
+        if (!productList || !leftArrow || !rightArrow) return; 
+
+        const scrollAmount = 250; 
+
+        leftArrow.addEventListener('click', () => {
+            productList.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+        });
+
+        rightArrow.addEventListener('click', () => {
+            productList.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        });
+    }
+
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // 1. Get stored user data (set during successful sign-in)
+        const token = localStorage.getItem('authToken');
+        const userName = localStorage.getItem('userName');
+        
+        // 2. Identify the element container in the navbar
+        const authContainer = document.getElementById('authLinkContainer');
+
+        // Check if the user is logged in
+        if (token && userName) {
+            // --- USER IS LOGGED IN (Persistent Login Active) ---
+            
+            // Construct the logged-in HTML: "Welcome, [Name]! | Sign Out"
+            authContainer.innerHTML = `
+                <span style="font-weight: bold; margin-right: 5px;">
+                    Welcome, ${userName}! 
+                </span>
+                | 
+                <a href="#" id="logoutBtn" style="margin-left: 5px;">Sign Out</a>
+            `;
+
+        } else {
+            // --- USER IS LOGGED OUT ---
+            
+            // Ensure the default "Sign In" link is displayed if the token is missing
+            authContainer.innerHTML = `
+                <a href="signin.html">Sign In</a> 
+            `;
+        }
+    });
+
+    // 3. Implement the Logout Functionality
+    document.addEventListener('click', (e) => {
+        if (e.target.id === 'logoutBtn') {
+            e.preventDefault(); // Stop the link from navigating
+
+            // Clear all authentication data
+            localStorage.removeItem('authToken');
+            localStorage.removeItem('userId');
+            localStorage.removeItem('userName');
+            
+            // Reload the page to reset the UI back to the "Sign In" state
+            window.location.reload(); 
+        }
+    });
+</script>
+</body>
+</html>

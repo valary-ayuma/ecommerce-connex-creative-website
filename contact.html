@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Connex Creative | B2B Design Solutions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="description" content="Your B2B partner, for premuim customized promotional merchandise from stationary to attire .">   
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+     <script src="header.js"></script>
+    <style> 
+        /* custome scrollbar for cleaner look*/
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f4;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+      
+    </style>
+</head>
+<body>
+    <header class="navbar">
+    <div class="logo">
+        <a href="index.html" class="logo">
+                <img src="logo.png"alt="connex creative logo">
+    </a>
+    </div>
+    <nav class="main-nav">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="product.html">Products</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+        </ul>
+    </nav>
+    <div class="utility-icons">
+        <a href="signin.html" class="sign-in-link">
+            <span class="icon-placeholder">👤</span> Sign in
+        </a>
+        <a href="cart.html" class="cart-link">
+            <span class="icon-placeholder cart-icon">🛒</span>
+            <span class="cart-count">0</span>
+        </a>
+    </div>
+</header>
+ <!-- Header Section -->
+    <header>
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-5xl font-extrabold text-blue-800 mb-2">
+                Let's Connect on Your Next Project
+            </h1>
+            <p class="text-4xl text-lg max-w-2xl mx-auto">
+                Whether you need a full rebrand, custom merchandise fulfillment, or have a simple question, our team is here to help your vision take shape.
+            </p>
+        </div>
+    </header>
+ <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-16">
+
+        <!-- Contact Details and Location Map Grid -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            
+            <!-- 1. Key Contact Details -->
+            <div class="md:col-span-1 bg-white p-8 rounded-2xl shadow-lg border border-stone-100 h-full">
+                <h2 class="text-2xl font-bold text-slate-800 mb-6">Reach Out Directly</h2>
+                <div class="space-y-6 text-stone-700">
+                    
+                    <!-- Email -->
+                    <div class="flex items-start gap-4">
+                        <span class="text-2xl text-blue-600">📧</span>
+                        <div>
+                            <p class="font-semibold text-slate-800">General Inquiries</p>
+                            <a href="mailto:info@connexcreative.com" class="text-blue-600 hover:text-blue-800 transition-colors">info@connexcreative.com</a>
+                        </div>
+                    </div>
+
+                    <!-- Phone -->
+                    <div class="flex items-start gap-4">
+                        <span class="text-2xl text-blue-600">📞</span>
+                        <div>
+                            <p class="font-semibold text-slate-800">New Business</p>
+                            <span class="block">+254 723-456-789</span>
+                            <span class="text-sm text-stone-500">Mon - Fri, 9:00 AM - 5:00 PM </span>
+                        </div>
+                    </div>
+
+                    <!-- Address -->
+                    <div class="flex items-start gap-4">
+                        <span class="text-2xl text-blue-600">📍</span>
+                        <div>
+                            <p class="font-semibold text-slate-800">Location</p>
+                            <address class="not-italic">
+                                Creative Building<br>
+                                Nairobi, Tom Mboya Street, Opposite Imenti House<br>
+                                Kenya
+                            </address>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        <!-- Contact Form Section -->
+        <section id="form-section" class="max-w-3xl mx-auto w-full pt-8">
+            <div class="bg-white p-8 md:p-10 rounded-2xl shadow-xl border border-blue-50">
+                <h2 class="text-3xl font-extrabold text-blue-800 mb-2">Send Us a Message</h2>
+                <p class="text-stone-600 mb-8">We aim to respond to all business inquiries within 1 business day.</p>
+
+                <form id="contactForm" class="space-y-6">
+                    
+                    <!-- Name and Email Row -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-slate-700 mb-1">Your Name</label>
+                            <input type="text" id="name" name="name" placeholder="John Doe" required class="form-input">
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-slate-700 mb-1">Business Email</label>
+                            <input type="email" id="email" name="email" placeholder="john.doe@company.com" required class="form-input">
+                        </div>
+                    </div>
+
+                    <!-- Company and Subject Row -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label for="company" class="block text-sm font-medium text-slate-700 mb-1">Company Name</label>
+                            <input type="text" id="company" name="company" placeholder="Acme Corp" required class="form-input">
+                        </div>
+                        <div>
+                            <label for="subject" class="block text-sm font-medium text-slate-700 mb-1">Subject</label>
+                            <select id="subject" name="subject" class="form-input" required>
+                                <option value="" disabled selected>Select a reason...</option>
+                                <option value="new_project">New Project Inquiry (Branding/Design)</option>
+                                <option value="fulfillment">Merchandise/Fulfillment Services</option>
+                                <option value="support">Existing Client Support</option>
+                                <option value="billing">Billing or Accounting</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Message Area -->
+                    <div>
+                        <label for="message" class="block text-sm font-medium text-slate-700 mb-1">Your Message</label>
+                        <textarea id="message" name="message" rows="5" placeholder="Tell us more about your needs and timeline..." required class="form-input"></textarea>
+                    </div>
+
+                    <!-- Submission Button -->
+                    <button type="submit" class="w-full py-3 px-4 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition-colors duration-200 shadow-md">
+                        Submit Inquiry
+                    </button>
+                </form>
+                <!-- Success Message Container -->
+                    <div id="successMessage" class="hidden mt-6 p-4 text-center bg-green-100 text-green-800 rounded-lg font-medium">
+                        Thank you! Your message has been received. We will be in touch shortly.
+                    </div>
+            </div>
+        </section>
+
+    </main>
+    <!-- FOOTER START - Copied from index.html to maintain consistency -->
+    <footer>
+         <div class="footer-links">
+            <a href="privacy.html">Privacy Policy</a>
+            <span class="link-separator">|</span>
+            <a href="terms.html">Terms of Service</a>
+        </div>
+        <p>&copy; <span id="currentYearFooter"></span> Connex Creative.</p>
+       
+    </footer>
+    
+    <script>
+        // Update year in footer
+        document.getElementById('currentYearFooter').textContent = new Date().getFullYear();
+        
+        // This is necessary because fixed headers require main content to be pushed down
+        const headerHeight = document.querySelector('header').offsetHeight;
+        document.querySelector('.legal-page-main').style.paddingTop = `${headerHeight + 20}px`;
+    </script>
+      <script>
+        document.getElementById('contactForm').addEventListener('submit', function(event) {
+            // Prevent actual form submission as we cannot process server-side
+            event.preventDefault(); 
+            
+            const form = event.target;
+            const successMessage = document.getElementById('successMessage');
+
+            // Hide form elements and show success message
+            form.classList.add('hidden');
+            successMessage.classList.remove('hidden');
+
+            // Optional: Reset form fields after a delay if desired, but hiding the form is cleaner.
+            // form.reset();
+
+            // Optional: Scroll to the message
+            successMessage.scrollIntoView({ behavior: 'smooth' });
+        });
+    </script>
+    <!-- FOOTER END -->
+</body>
+</html>

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart Connex Creative | B2B Design Solutions</title>
+    <meta name="description" content="Your B2B partner, for premuim customized promotional merchandise from stationary to attire ."> 
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <script src="header.js"></script>
+    <style>
+        /* Add some basic styles if not in style.css */
+        .cart-item { border-bottom: 1px solid #eee; padding: 15px 0; display: flex; justify-content: space-between; align-items: center; }
+        .cart-item-details { flex-grow: 1; }
+        .cart-item-price { font-weight: bold; }
+        .cart-summary hr { margin: 15px 0; }
+        .checkout-section { margin-top: 30px; padding: 20px; border: 1px solid #ccc; border-radius: 8px; }
+        #checkoutButton { background-color: var(--primary-color, #007bff); color: white; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; width: 100%; margin-top: 15px; }
+        #checkoutButton:disabled { background-color: #ccc; }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo">
+            <a href="index.html" class="logo">
+                <img src="logo.png"alt="connex creative logo">
+            </a>
+        </div>
+        <nav class="main-nav">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="product.html">Products</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+            </ul>
+        </nav>
+        <div class="utility-icons">
+            <a href="signin.html" class="sign-in-link">
+                <span class="icon-placeholder">👤</span> Sign in
+            </a>
+            <a href="cart.html" class="cart-link">
+                <span class="icon-placeholder cart-icon">🛒</span>
+                <span class="cart-count">0</span>
+            </a>
+        </div>
+    </header>
+    <main>
+        <div class="cart-container">
+            <h2>Your Shopping Cart</h2>
+
+            <div id="cartItems">
+                <p>Loading cart...</p>
+            </div>
+            
+            <div class="cart-summary">
+                <h3>Order Summary</h3>
+                <p>Subtotal: <span id="subtotal">Ksh 0.00</span></p>
+                <p>Shipping: <span id="shipping">Ksh 0.00</span></p> 
+                <hr>
+                <p><strong>Total: <span id="total">Ksh 0.00</span></strong></p>
+            </div>
+
+            <div class="checkout-section">
+                <h3>Checkout Details</h3>
+                
+                <form id="mpesaCheckoutForm">
+                    <label for="phoneNumber">M-Pesa Phone Number (2547...):</label>
+                    <input type="tel" id="phoneNumber" placeholder="e.g., 2547XXXXXXXX" required>
+                    
+                    <button type="submit" id="checkoutButton">Proceed to M-Pesa Payment</button>
+                    <p id="paymentMessage" style="margin-top: 15px;"></p>
+                </form>
+            </div>
+        </div>
+    </main>
+    <footer>
+        </footer>
+    <script>
+        const cartItemsContainer = document.getElementById('cartItems');
+        const subtotalDisplay = document.getElementById('subtotal');
+        const totalDisplay = document.getElementById('total');
+        const checkoutForm = document.getElementById('mpesaCheckoutForm');
+        const messageElement = document.getElementById('paymentMessage');
+        const checkoutButton = document.getElementById('checkoutButton');
+        
+        // --- Global Variables ---
+        let currentCartItems = [];
+        let cartTotal = 0; 
+        const shippingCost = 0; // Fixed shipping for simplicity
+
+        /**
+         * Fetches cart items from the backend and updates the UI.
+         */
+        async function fetchCart() {
+            const token = localStorage.getItem('token');
+            const userId = localStorage.getItem('userId');
+
+            if (!token || !userId) {
+                cartItemsContainer.innerHTML = '<p style="color: red;">Please <a href="signin.html">Sign in</a> to view your cart.</p>';
+                checkoutButton.disabled = true;
+                return;
+            }
+
+            try {
+                const response = await fetch('http://localhost:3001/api/cart', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                currentCartItems = await response.json();
+
+                if (currentCartItems.length === 0) {
+                    cartItemsContainer.innerHTML = '<p>Your cart is empty.</p>';
+                    cartTotal = 0;
+                    checkoutButton.disabled = true;
+                } else {
+                    renderCart(currentCartItems);
+                }
+            } catch (error) {
+                console.error('Fetch Cart Error:', error);
+                cartItemsContainer.innerHTML = '<p style="color: red;">Could not load cart data. Please try again later.</p>';
+                cartTotal = 0;
+                checkoutButton.disabled = true;
+            }
+            
+            // Final display update
+            const grandTotal = cartTotal + shippingCost;
+            subtotalDisplay.textContent = `Ksh ${cartTotal.toFixed(2).toLocaleString('en-US')}`;
+            totalDisplay.textContent = `Ksh ${grandTotal.toFixed(2).toLocaleString('en-US')}`;
+        }
+        
+        /**
+         * Renders the cart items list and calculates the total.
+         * @param {Array} items 
+         */
+        function renderCart(items) {
+            cartItemsContainer.innerHTML = '';
+            let calculatedSubtotal = 0;
+            
+            items.forEach(item => {
+                calculatedSubtotal += item.total_price;
+                
+                const itemDiv = document.createElement('div');
+                itemDiv.classList.add('cart-item');
+                itemDiv.innerHTML = `
+                    <div class="cart-item-details">
+                        <h4>${item.product_name}</h4>
+                        <p>Qty: ${item.quantity} @ KES ${item.unit_price.toFixed(2)}/unit</p>
+                    </div>
+                    <span class="cart-item-price">KES ${item.total_price.toFixed(2).toLocaleString('en-US')}</span>
+                `;
+                cartItemsContainer.appendChild(itemDiv);
+            });
+            
+            cartTotal = calculatedSubtotal;
+        }
+
+        /**
+         * Handles the M-Pesa checkout form submission.
+         */
+        checkoutForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            if (cartTotal <= 0) {
+                messageElement.style.color = 'red';
+                messageElement.textContent = 'Cannot checkout an empty cart.';
+                return;
+            }
+            
+            messageElement.style.color = 'blue';
+            messageElement.textContent = 'Initiating M-Pesa STK Push...';
+            checkoutButton.disabled = true;
+
+            const phoneNumber = document.getElementById('phoneNumber').value;
+            const amount = Math.ceil(cartTotal + shippingCost); // Use grand total, rounded up for M-Pesa
+            const token = localStorage.getItem('token');
+            const userId = localStorage.getItem('userId');
+
+            // --- NOTE --- 
+            // In a production app, you would have a *separate* step here to 
+            // create the final Order record from the currentCartItems. 
+            // We skip that step for this simplified integration.
+            // We use a dummy 'orderId' or rely on the backend to handle the Order creation based on the cart.
+
+            try {
+                // Call the backend API for M-Pesa STK Push
+                // NOTE: Your server.js currently expects orderId in the STK Push route. 
+                // Since this is a cart, we'll need to update server.js to handle a cart checkout 
+                // OR we need to perform an AJAX request here to create the Order first, then pay.
+                // Assuming we use the previous logic that expects a cart total and user ID:
+                
+                const response = await fetch('http://localhost:3001/api/mpesa/stkpush', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}` 
+                    },
+                    body: JSON.stringify({ 
+                        phoneNumber: phoneNumber, 
+                        amount: amount, 
+                        userId: userId,
+                        // NOTE: If your server requires an orderId, you must create the order first.
+                        // Since we don't have that step, we'll assume the simple structure you provided works.
+                    }) 
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    messageElement.style.color = 'green';
+                    messageElement.textContent = data.message || `M-Pesa prompt for KES ${amount} sent! Check your phone to complete the payment.`;
+                    // Clear the cart on successful payment initiation (or wait for the callback)
+                    // You would typically start a polling process here to check the payment status
+                } else {
+                    messageElement.style.color = 'red';
+                    messageElement.textContent = data.message || 'Payment initiation failed. Please try again.';
+                }
+
+            } catch (error) {
+                console.error('M-Pesa Fetch error:', error);
+                messageElement.style.color = 'red';
+                messageElement.textContent = 'Network error. Could not connect to the server.';
+            } finally {
+                checkoutButton.disabled = false;
+            }
+        });
+        
+        // Initial load of the cart
+        document.addEventListener('DOMContentLoaded', fetchCart);
+    </script>
+</body>
+</html>

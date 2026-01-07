@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connex Creative | Interactive Privacy Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css">
+     <script src="header.js"></script>
+    <style>
+        /* Custom Scrollbar for cleaner look */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f4; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+
+        /* Chart Container Specifics */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px; /* Max width constraint */
+            height: 300px;    /* Defined height */
+            margin-left: auto;
+            margin-right: auto;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+
+        /* Smooth Transitions */
+        .transition-all-300 {
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Card Hover Effects */
+        .hover-lift:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body class="bg-stone-50 text-slate-800 font-sans leading-relaxed selection:bg-blue-100 selection:text-blue-900">
+    <header class="navbar">
+        <div class="logo">
+            <a href="index.html" class="logo">
+                <img src="logo.png"alt="connex creative logo">
+            </a>
+        </div>
+        <nav class="main-nav">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-stone-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <span class="text-2xl text-blue-800 font-bold">Connex Creative</span>
+                <span class="text-sm px-2 py-0.5 bg-stone-100 rounded text-stone-500 font-medium hidden sm:inline-block">Privacy Hub</span>
+            </div>
+            <div class="text-sm font-medium text-stone-500">
+                Effective: <span class="text-slate-800">December 3, 2025</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-16">
+
+        <!-- SECTION 1: HERO & SCOPE -->
+        <section class="space-y-6">
+            <div class="text-center max-w-3xl mx-auto">
+                <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight mb-4">
+                    Transparency by Design
+                </h1>
+                <p class="text-lg text-stone-600">
+                    At Connex Creative, we value our B2B partnerships. This Privacy Hub allows you to explore exactly how we handle the information of our business representatives and professional contacts. We prioritize clarity over legalese.
+                </p>
+            </div>
+
+            <!-- Scope Visualization Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center bg-white rounded-2xl p-6 shadow-sm border border-stone-100">
+                <div class="space-y-4">
+                    <h2 class="text-2xl font-bold text-slate-800 border-l-4 border-blue-600 pl-4">1. Scope of Policy</h2>
+                    <p class="text-stone-600">
+                        This policy applies to information collected through our website, sales interactions, and service fulfillment. 
+                        <br><br>
+                        <strong>Key Takeaway:</strong> Because we are a B2B branding solution provider, our data collection is focused on <em>business utility</em>, not consumer profiling. The chart represents the approximate distribution of data types we process.
+                    </p>
+                    <div class="flex gap-4 pt-4">
+                        <div class="px-4 py-2 bg-blue-50 text-blue-800 rounded-lg text-sm font-semibold">
+                            🏢 Business Focus
+                        </div>
+                        <div class="px-4 py-2 bg-stone-100 text-stone-600 rounded-lg text-sm font-semibold">
+                            📦 Service Oriented
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Chart Container -->
+                <div class="bg-stone-50 rounded-xl p-4 flex flex-col items-center justify-center">
+                    <h3 class="text-sm font-bold text-stone-500 uppercase tracking-wider mb-4">Data Composition Overview</h3>
+                    <div class="chart-container">
+                        <canvas id="scopeChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: DATA COLLECTION EXPLORER -->
+        <section id="collection-explorer">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-slate-900 mb-3">2. Information We Collect</h2>
+                <p class="text-stone-600 max-w-2xl">
+                    We collect specific categories of data necessary to establish accounts, manage branding projects, and maintain our technical infrastructure. Click the tabs below to explore each category in detail.
+                </p>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-lg border border-stone-100 overflow-hidden">
+                <!-- Tabs -->
+                <div class="flex flex-wrap border-b border-stone-200 bg-stone-50" id="dataTabs">
+                    <button onclick="switchTab('business')" class="flex-1 py-4 px-6 text-center font-semibold text-blue-800 bg-white border-t-2 border-blue-600 transition-colors duration-200" id="tab-business">
+                        📇 Business Contact
+                    </button>
+                    <button onclick="switchTab('project')" class="flex-1 py-4 px-6 text-center font-semibold text-stone-500 hover:bg-stone-100 transition-colors duration-200" id="tab-project">
+                        🎨 Project & Order
+                    </button>
+                    <button onclick="switchTab('technical')" class="flex-1 py-4 px-6 text-center font-semibold text-stone-500 hover:bg-stone-100 transition-colors duration-200" id="tab-technical">
+                        💻 Technical Data
+                    </button>
+                </div>
+
+                <!-- Content Area -->
+                <div class="p-8 min-h-[300px] flex items-center">
+                    <!-- Business Content -->
+                    <div id="content-business" class="w-full grid grid-cols-1 md:grid-cols-2 gap-8 animate-fade-in">
+                        <div class="space-y-4">
+                            <h3 class="text-xl font-bold text-slate-800">Who is this about?</h3>
+                            <p class="text-stone-600">Individuals who represent our clients and potential clients.</p>
+                            <ul class="space-y-2">
+                                <li class="flex items-start gap-2">
+                                    <span class="text-blue-500 mt-1">✓</span>
+                                    <span><strong>Identifiers:</strong> Full name, Job Title, Company Name.</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="text-blue-500 mt-1">✓</span>
+                                    <span><strong>Contact Info:</strong> Business email, Phone number, Mailing address.</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="bg-blue-50 p-6 rounded-xl border border-blue-100">
+                            <h4 class="font-bold text-blue-900 mb-2">Why we need it</h4>
+                            <p class="text-blue-800 text-sm">To verify corporate identity and maintain a line of communication for contract negotiations and account management.</p>
+                        </div>
+                    </div>
+
+                    <!-- Project Content -->
+                    <div id="content-project" class="w-full grid grid-cols-1 md:grid-cols-2 gap-8 hidden">
+                        <div class="space-y-4">
+                            <h3 class="text-xl font-bold text-slate-800">What projects involve</h3>
+                            <p class="text-stone-600">Data specifically required to fulfill branding and merchandise contracts.</p>
+                            <ul class="space-y-2">
+                                <li class="flex items-start gap-2">
+                                    <span class="text-orange-500 mt-1">✓</span>
+                                    <span><strong>Contractual Data:</strong> Item types, specs, quantities, deadlines.</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="text-orange-500 mt-1">✓</span>
+                                    <span><strong>Design Assets:</strong> Logos, style guides, proprietary artwork.</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="text-orange-500 mt-1">✓</span>
+                                    <span><strong>Fulfillment:</strong> Shipping locations and delivery contacts.</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="bg-orange-50 p-6 rounded-xl border border-orange-100">
+                            <h4 class="font-bold text-orange-900 mb-2">Why we need it</h4>
+                            <p class="text-orange-800 text-sm">To physically produce your custom merchandise and ensure it reaches the correct destination on time.</p>
+                        </div>
+                    </div>
+
+                    <!-- Technical Content -->
+                    <div id="content-technical" class="w-full grid grid-cols-1 md:grid-cols-2 gap-8 hidden">
+                        <div class="space-y-4">
+                            <h3 class="text-xl font-bold text-slate-800">Digital Footprint</h3>
+                            <p class="text-stone-600">Information collected automatically during website interaction.</p>
+                            <ul class="space-y-2">
+                                <li class="flex items-start gap-2">
+                                    <span class="text-slate-500 mt-1">✓</span>
+                                    <span><strong>System Info:</strong> IP address, browser type, OS.</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="text-slate-500 mt-1">✓</span>
+                                    <span><strong>Usage Stats:</strong> Pages viewed, time spent.</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="text-slate-500 mt-1">✓</span>
+                                    <span><strong>Cookies:</strong> Functional and analytical trackers.</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="bg-stone-100 p-6 rounded-xl border border-stone-200">
+                            <h4 class="font-bold text-stone-900 mb-2">Why we need it</h4>
+                            <p class="text-stone-700 text-sm">To ensure our website functions securely and to analyze traffic trends to improve our B2B service offerings.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: USAGE & DISCLOSURE -->
+        <section>
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-slate-900 mb-3">3 & 4. Usage & Disclosure Ecosystem</h2>
+                <p class="text-stone-600 max-w-2xl">
+                    We operate transparently. Below is a breakdown of how we utilize your data internally and the trusted third parties we work with to deliver our services. We <strong>do not sell</strong> client data.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Usage Card -->
+                <div class="md:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-stone-100">
+                    <h3 class="text-lg font-bold text-blue-900 mb-4 flex items-center gap-2">
+                        <span>⚙️</span> Internal Usage Purposes
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="p-3 bg-stone-50 rounded-lg hover:bg-blue-50 transition-colors">
+                            <div class="font-semibold text-slate-800">Contract Fulfillment</div>
+                            <div class="text-xs text-stone-500">Processing orders, customization, production.</div>
+                        </div>
+                        <div class="p-3 bg-stone-50 rounded-lg hover:bg-blue-50 transition-colors">
+                            <div class="font-semibold text-slate-800">Account Management</div>
+                            <div class="text-xs text-stone-500">Billing, support, relationship maintenance.</div>
+                        </div>
+                        <div class="p-3 bg-stone-50 rounded-lg hover:bg-blue-50 transition-colors">
+                            <div class="font-semibold text-slate-800">Communication</div>
+                            <div class="text-xs text-stone-500">Service updates, proofing, logistics.</div>
+                        </div>
+                        <div class="p-3 bg-stone-50 rounded-lg hover:bg-blue-50 transition-colors">
+                            <div class="font-semibold text-slate-800">Legal Compliance</div>
+                            <div class="text-xs text-stone-500">Enforcing terms, protecting rights.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Disclosure Card -->
+                <div class="bg-slate-800 text-white p-6 rounded-xl shadow-lg relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 text-6xl">🌐</div>
+                    <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+                        <span>🤝</span> Shared With
+                    </h3>
+                    <ul class="space-y-4 text-sm text-slate-300">
+                        <li class="flex gap-3">
+                            <span class="bg-slate-700 p-1 rounded">🚚</span>
+                            <div>
+                                <strong class="text-white block">Service Providers</strong>
+                                Manufacturers & shippers needing addresses/assets.
+                            </div>
+                        </li>
+                        <li class="flex gap-3">
+                            <span class="bg-slate-700 p-1 rounded">⚖️</span>
+                            <div>
+                                <strong class="text-white block">Advisors</strong>
+                                Lawyers & accountants for auditing.
+                            </div>
+                        </li>
+                        <li class="flex gap-3">
+                            <span class="bg-slate-700 p-1 rounded">💳</span>
+                            <div>
+                                <strong class="text-white block">Processors</strong>
+                                Secure payment handling (No stored details).
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: YOUR RIGHTS -->
+        <section class="bg-blue-900 rounded-3xl p-8 md:p-12 text-white relative overflow-hidden">
+            <!-- Background Decoration -->
+            <div class="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none" 
+                 style="background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 20px 20px;"></div>
+
+            <div class="relative z-10">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl font-bold mb-4">6. Your Rights Control Panel</h2>
+                    <p class="text-blue-200 max-w-2xl mx-auto">
+                        As a Client Representative, you maintain control over your business contact information. Hover over or tap the cards below to understand your options.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Right 1 -->
+                    <div class="bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-white/20 hover:bg-white/20 transition-all-300 cursor-pointer group">
+                        <div class="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">📂</div>
+                        <h3 class="text-xl font-bold mb-2">Access</h3>
+                        <p class="text-sm text-blue-100 mb-4">Request copies of the business contact information we hold about you.</p>
+                        <button class="px-4 py-2 bg-white text-blue-900 rounded-lg text-sm font-bold w-full opacity-0 group-hover:opacity-100 transition-opacity">Request Access</button>
+                    </div>
+
+                    <!-- Right 2 -->
+                    <div class="bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-white/20 hover:bg-white/20 transition-all-300 cursor-pointer group">
+                        <div class="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">✏️</div>
+                        <h3 class="text-xl font-bold mb-2">Correction</h3>
+                        <p class="text-sm text-blue-100 mb-4">Request updates to any inaccurate or incomplete information.</p>
+                        <button class="px-4 py-2 bg-white text-blue-900 rounded-lg text-sm font-bold w-full opacity-0 group-hover:opacity-100 transition-opacity">Request Edit</button>
+                    </div>
+
+                    <!-- Right 3 -->
+                    <div class="bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-white/20 hover:bg-white/20 transition-all-300 cursor-pointer group">
+                        <div class="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">🔕</div>
+                        <h3 class="text-xl font-bold mb-2">Opt-Out</h3>
+                        <p class="text-sm text-blue-100 mb-4">Unsubscribe from marketing or promotional emails at any time.</p>
+                        <button class="px-4 py-2 bg-white text-blue-900 rounded-lg text-sm font-bold w-full opacity-0 group-hover:opacity-100 transition-opacity">Unsubscribe</button>
+                    </div>
+                </div>
+                
+                <p class="text-center text-xs text-blue-300 mt-8">
+                    Note: We may verify identity and corporate affiliation before processing requests.
+                </p>
+            </div>
+        </section>
+
+        <!-- SECTION 5: SECURITY & CONTACT -->
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="bg-white p-8 rounded-2xl shadow-sm border border-stone-100">
+                <h2 class="text-2xl font-bold text-slate-800 mb-4 flex items-center gap-2">
+                    <span>🛡️</span> Data Security
+                </h2>
+                <p class="text-stone-600 mb-4">
+                    We implement administrative, technical, and physical safeguards designed to protect your information against unauthorized access.
+                </p>
+                <div class="bg-green-50 text-green-800 p-4 rounded-lg text-sm font-semibold flex items-center gap-2">
+                    <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                    System Status: Secure & Monitored
+                </div>
+            </div>
+
+            <div class="bg-stone-800 text-stone-200 p-8 rounded-2xl shadow-sm">
+                <h2 class="text-2xl font-bold text-white mb-4">Contact Us</h2>
+                <p class="mb-6 text-sm">Have questions about our practices? Reach out directly.</p>
+                <div class="space-y-3">
+                    <div class="flex items-center gap-3">
+                        <span>📧</span>
+                        <a href="mailto:privacy@connexcreative.com" class="hover:text-white transition-colors">privacy@connexcreative.com</a>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span>📍</span>
+                        <span>Connex Creative Corporate HQ</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span>📞</span>
+                        <span>0723456789</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-stone-100 border-t border-stone-200 py-12 mt-12">
+        <div class="max-w-7xl mx-auto px-4 text-center text-stone-500 text-sm">
+            <p>&copy; 2025 Connex Creative. All rights reserved.</p>
+            <p class="mt-2">Changes to this policy will be posted here.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // --- 1. Data Store ---
+        // Storing structure for tabs to avoid hardcoding in HTML multiple times if we wanted to expand
+        const tabConfig = {
+            activeClass: "text-blue-800 bg-white border-t-2 border-blue-600",
+            inactiveClass: "text-stone-500 hover:bg-stone-100"
+        };
+
+        // --- 2. Functional Navigation (Tabs) ---
+        function switchTab(tabName) {
+            // Hide all content
+            ['business', 'project', 'technical'].forEach(type => {
+                document.getElementById(`content-${type}`).classList.add('hidden');
+                
+                // Reset tab styles
+                const tabBtn = document.getElementById(`tab-${type}`);
+                tabBtn.className = `flex-1 py-4 px-6 text-center font-semibold transition-colors duration-200 ${tabConfig.inactiveClass}`;
+            });
+
+            // Show selected content
+            document.getElementById(`content-${tabName}`).classList.remove('hidden');
+            
+            // Set active tab style
+            const activeTab = document.getElementById(`tab-${tabName}`);
+            activeTab.className = `flex-1 py-4 px-6 text-center font-semibold transition-colors duration-200 ${tabConfig.activeClass}`;
+        }
+
+        // --- 3. Chart.js Initialization ---
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('scopeChart').getContext('2d');
+            
+            // Data representing the "B2B Focus" of the policy
+            // Visualizing Section 1 & 2 emphasis on Business/Project data vs Technical
+            const data = {
+                labels: ['Business Contact Info', 'Project & Order Data', 'Technical Data'],
+                datasets: [{
+                    data: [45, 40, 15], // Conceptual distribution based on policy text focus
+                    backgroundColor: [
+                        '#2563eb', // Blue-600 (Business)
+                        '#f97316', // Orange-500 (Project)
+                        '#94a3b8'  // Slate-400 (Technical)
+                    ],
+                    borderWidth: 0,
+                    hoverOffset: 10
+                }]
+            };
+
+            const config = {
+                type: 'doughnut',
+                data: data,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false, // Critical for container fitting
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: {
+                                    family: 'sans-serif',
+                                    size: 12
+                                },
+                                usePointStyle: true,
+                                padding: 20
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return ' ' + context.label + ': ' + context.raw + '% Focus';
+                                }
+                            },
+                            backgroundColor: 'rgba(30, 41, 59, 0.9)',
+                            padding: 12,
+                            cornerRadius: 8
+                        }
+                    },
+                    cutout: '65%', // Thinner donut
+                    animation: {
+                        animateScale: true,
+                        animateRotate: true
+                    }
+                }
+            };
+
+            new Chart(ctx, config);
+        });
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Connex Creative</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    
+</head>
+    <style>
+        /* Basic styling for clarity */
+        body { font-family: sans-serif; margin: 20px; }
+        .form-container { max-width: 400px; margin: 50px auto; padding: 20px; border: 1px solid #ccc; border-radius: 8px; }
+        input { width: 100%; padding: 10px; margin-bottom: 15px; box-sizing: border-box; }
+        button { background-color: #007bff; color: white; padding: 10px 15px; border: none; cursor: pointer; }
+    </style>
+
+<body>
+    <header class="navbar">
+        <div class="logo">
+            <a href="index.html" class="logo">
+                    <img src="logo.png"alt="connex creative logo">
+        </a>
+        </div>
+        <nav class="main-nav">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="product.html">Products</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+            </ul>
+        </nav>
+        <div class="utility-icons">
+            <a href="signin.html" class="sign-in-link">
+                <span class="icon-placeholder">👤</span> Sign in
+            </a>
+            <a href="cart.html" class="cart-link">
+                <span class="icon-placeholder cart-icon">🛒</span>
+                <span class="cart-count">0</span>
+            </a>
+        </div>
+    </header>    
+        
+
+    <main>
+        <div class="form-container">
+            <h2>Create Your Account</h2>
+            
+            <form id="signUpForm">
+                <label for="name">Full Name:</label>
+                <input type="text" id="name" required>
+
+                <label for="email">Email Address:</label>
+                <input type="email" id="email" required>
+                
+                <label for="password">Password:</label>
+                <input type="password" id="password" required>
+                
+                <button type="submit">Register Account</button>
+            </form>
+            
+            <p id="message" style="margin-top: 15px;"></p>
+            
+            <p>Already have an account? <a href="signin.html">Sign In</a></p>
+            <p>You can still <a href="index.html">continue shopping</a> without an account.</p>
+        </div>
+    </main>
+    
+    <script>
+        const messageElement = document.getElementById('message');
+        const signUpForm = document.getElementById('signUpForm');
+
+        signUpForm.addEventListener('submit', async (e) => {
+            e.preventDefault(); 
+
+            // 1. Get user input
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            messageElement.textContent = ''; // Clear previous messages
+
+            try {
+                // 2. Send data to the Node.js registration API endpoint
+                const response = await fetch('http://localhost:3001/auth/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Registration success!
+                    messageElement.style.color = 'green';
+                    messageElement.textContent = data.message + ' You can now sign in! Redirecting...';
+
+                    // 3. Redirect to the Sign In page after a short delay
+                    setTimeout(() => {
+                        window.location.href = 'signin.html'; 
+                    }, 2000); 
+                    
+                } else {
+                    // Registration failed (e.g., email already exists, server error)
+                    messageElement.style.color = 'red';
+                    // Display the error message from the server
+                    messageElement.textContent = data.message || 'Registration failed. Check server connection.';
+                }
+            } catch (error) {
+                console.error('Fetch error:', error);
+                messageElement.style.color = 'red';
+                messageElement.textContent = 'Network error. Could not connect to the API server.';
+            }
+        });
+    </script>
+</body>
+</html>
