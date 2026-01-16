@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connex Creative | B2B Design Solutions</title>>
+    <title>Connex Creative | B2B Design Solutions</title>
     <meta name="description" content="E-commerce home page design replica.">
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
-     <script src="header.js"></script>
-      <style>
+    <script src="header.js"></script>
+    <style>
         /* --- CSS Styles for Enhanced Product Page Appearance (From previous response) --- */
         :root {
             --primary-color: #5d2595; /* Defining primary color for reusability */
@@ -39,7 +39,7 @@
         .btn-secondary { background-color: white; color: var(--primary-color); border: 2px solid var(--primary-color); box-shadow: none; }
         .btn-secondary:hover { background-color: #f0f0f0; color: #4a1e78; border-color: #4a1e78; }
     </style>
-    </head>
+</head>
 <body>
 
     <header class="navbar">
@@ -67,34 +67,26 @@
         </a>
     </div>
 </header>
-    <!-- Product Detail Container -->
     <div class="product-detail-container">
-        <!-- Left Column: Media & Specs -->
         <div class="product-media">
             <div class="product-media-mockup">
-                <!-- Image of a blank t-shirt with a corporate logo placeholder on the chest area -->
                 <div class="logo-placeholder">Upload Your Logo Here</div>
             </div>
 
             <div class="specifications">
                 <h3>Product Specifications</h3>
-                <p><strong>Material(pages):</strong> <span>250 GSM Matte/Gloss Art Paper</span></p>
-                <p><strong>Material(stand):</strong> <span>Hardbound Cardboard or PVC (specify if known)</span></p>
-                <p><strong>Pages:</strong> <span>13 Sheets (1 cover + 12 months)</span></p>
-                <p><strong>Binding:</strong> <span>Wire-O Binding (Metal Spiral)</span></p>
-                <p><strong>Sizes:</strong> <span>S, M, L, XL, 2XL (Variable Product)</span></p>
-                <p><strong>Colors:</strong> <span>Full-Color Printing (CMYK)</span></p>
-                <p><strong>Branding Area:</strong> <span>Stand/Base (Approx. 6" x 1.5") and/or Top of Each Page</span></p>
+                <p><strong>Material:</strong> <span>100% Ringspun Cotton, 200 GSM</span></p>
+                <p><strong>Size:</strong> <span>one size(typically approx. 14"W x 16"H with 25" handles)</span></p>
+                <p><strong>Colors:</strong> <span>Black, Navy, White, Grey, red, blue</span></p>
+                <p><strong>Branding Area:</strong> <span>Front Centre (10" x 12")</span></p>
                 
             </div>
         </div>
 
-        <!-- Right Column: Info & Order Form -->
         <div class="product-info">
-            <h1 class="product-title">Branded Calender</h1>
-            <p class="product-subtitle">Keep your brand visible all year long with this professional, custom-printed table calendar.</p>
+            <h1 class="product-title">Branded Trial</h1>
+            <p class="product-subtitle">The ultimate carryall for your team and events.</p>
 
-            <!-- Bulk Pricing Table -->
             <div class="bulk-pricing">
                 <h4><span style="font-size: 1.4em;">$</span> Bulk Pricing (KES)</h4>
                 <table class="pricing-table">
@@ -108,29 +100,28 @@
                     <tbody>
                         <tr>
                             <td>1 - 50</td>
-                            <td>KES 500</td>
-                            <td>KES 25,000</td>
+                            <td>KES 1</td>
+                            <td>KES 50</td>
                         </tr>
                         <tr>
                             <td>51 - 200</td>
-                            <td>KES 460</td>
-                            <td>KES 92,000</td>
+                            <td>KES 760</td>
+                            <td>KES 152,000</td>
                         </tr>
                         <tr>
                             <td>201 - 500</td>
-                            <td>KES 430</span></td>
-                            <td>KES 215,000</td>
+                            <td>KES 730</span></td>
+                            <td>KES 365,000</td>
                         </tr>
                         <tr>
                             <td>501+</td>
-                            <td>KES 400</td>
+                            <td>KES 700</td>
                             <td>Custom</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
-            <!-- Order Section -->
             <div class="order-section">
                 <div class="input-group">
                     <label for="colorSelect">Product Color</label>
@@ -148,35 +139,29 @@
                     <input type="file" id="logoUpload" accept="image/*" class="color-select-input">
                 </div>
                 <div class="input-group">
-                    
                     <label for="quantity">Quantity (Minimum 1 Unit)</label>
                     <div class="quantity-input-wrapper">
-                        <!-- Initial value is 100 -->
                         <input type="number" id="quantity" class="quantity-input" value="100" min="1">
                     </div>
                 </div>
 
                 <div class="unit-price">
                     <span>Current Unit Price:</span>
-                    <!-- Price updated by JavaScript -->
-                    <span class="starting-price">KES 460</span>
+                    <span class="starting-price">KES 760</span>
                 </div>
 
                 <div class="total-cost">
                     <span>Total Estimated Cost:</span>
-                    <!-- Total updated by JavaScript -->
-                    <span class="total-cost-amount">KES 46,000</span>
+                    <span class="total-cost-amount">KES 76,000</span>
                 </div>
             </div>
 
-            <!-- Action Buttons -->
-            <!-- The text and appearance of this button is controlled by JS -->
             <button type="button" class="btn btn-primary" id="add-to-cart-btn">Add to Cart</button>
             <a href="request_quote.html" class="btn btn-secondary"><span>&#9734;</span> Request Custom Bulk Quote</a>
 
             <div id="cart-popup" style="display:none; position: fixed; top: 20px; right: 20px; background: #28a745; color: white; padding: 15px 25px; border-radius: 8px; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
                 ✅ Added to cart successfully!
-            </div>
+             </div>
     </div>
 <footer>
         <div class="footer-links">
@@ -190,7 +175,6 @@
         // Update year in footer
         document.getElementById('currentYearFooter').textContent = new Date().getFullYear();
     </script>
-    <!-- JavaScript for Dynamic Pricing Calculation -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const quantityInput = document.getElementById('quantity');
@@ -203,10 +187,10 @@
             const cartCount = document.querySelector('.cart-count');
 
             const pricingTiers = [
-                { max: 50, price: 500 },
-                { max: 200, price: 460 },
-                { max: 500, price: 430 },
-                { max: Infinity, price: 400 }
+                { max: 50, price: 1 },
+                { max: 200, price: 760 },
+                { max: 500, price: 730 },
+                { max: Infinity, price: 700 }
             ];
 
             function formatKES(amount) {

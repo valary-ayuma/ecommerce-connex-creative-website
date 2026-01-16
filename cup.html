@@ -140,7 +140,12 @@
                         <option value="Blue">Blue</option>
                     </select>
                 </div>
+                <div class="input-group" style="margin-top: 15px;">
+                    <label for="logoUpload">Upload Your Logo (Optional)</label>
+                    <input type="file" id="logoUpload" accept="image/*" class="color-select-input">
+                </div>
                 <div class="input-group">
+                    
                     <label for="quantity">Quantity (Minimum 1 Unit)</label>
                     <div class="quantity-input-wrapper">
                         <!-- Initial value is 100 -->
@@ -163,9 +168,12 @@
 
             <!-- Action Buttons -->
             <!-- The text and appearance of this button is controlled by JS -->
-            <a href="customize_order.html" class="btn btn-primary" id="customize-order-btn">Customize & Order (KES 51,000)</a>
+            <button type="button" class="btn btn-primary" id="add-to-cart-btn">Add to Cart</button>
             <a href="request_quote.html" class="btn btn-secondary"><span>&#9734;</span> Request Custom Bulk Quote</a>
-        </div>
+
+            <div id="cart-popup" style="display:none; position: fixed; top: 20px; right: 20px; background: #28a745; color: white; padding: 15px 25px; border-radius: 8px; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
+                ✅ Added to cart successfully!
+            </div>
     </div>
 <footer>
         <div class="footer-links">
@@ -185,102 +193,82 @@
             const quantityInput = document.getElementById('quantity');
             const unitPriceDisplay = document.querySelector('.unit-price .starting-price');
             const totalCostDisplay = document.querySelector('.total-cost-amount');
-            const customizeButton = document.getElementById('customize-order-btn');
-            
-            // Define the pricing tiers (Max quantity for the tier, Price per Unit)
+            const addToCartBtn = document.getElementById('add-to-cart-btn');
+            const colorSelect = document.getElementById('colorSelect');
+            const logoUpload = document.getElementById('logoUpload');
+            const cartPopup = document.getElementById('cart-popup');
+            const cartCount = document.querySelector('.cart-count');
+
             const pricingTiers = [
                 { max: 50, price: 550 },
                 { max: 200, price: 510 },
                 { max: 500, price: 480 },
-                { max: Infinity, price: 450 } // Tier for 501+
+                { max: Infinity, price: 450 }
             ];
 
             function formatKES(amount) {
-                // Formats numbers with commas and prepends 'KES '
-                if (typeof amount !== 'number') return amount;
                 return `KES ${amount.toLocaleString('en-US')}`;
             }
 
-            function calculatePrice(quantity) {
-                // Find the correct tier
-                const tier = pricingTiers.find(t => quantity <= t.max);
-                
-                // Special handling for the 501+ tier 
-                if (quantity > 500) {
-                    const unitPrice = 450; 
-                    return { 
-                        unitPrice: unitPrice, 
-                        totalCostText: 'Custom Quote',
-                        buttonText: 'Request Custom Bulk Quote'
-                    };
-                }
-
-                if (tier) {
-                    const unitPrice = tier.price;
-                    const totalCost = quantity * unitPrice;
-                    return { 
-                        unitPrice: unitPrice, 
-                        totalCostText: formatKES(totalCost),
-                        buttonText: `Customize & Order (${formatKES(totalCost)})`
-                    };
-                }
-                
-                // Fallback 
-                return { 
-                    unitPrice: 550, 
-                    totalCostText: 'N/A', 
-                    buttonText: 'Customize & Order'
-                };
-            }
-
             function updateOrderSummary() {
-                let quantity = parseInt(quantityInput.value, 10);
-                
-                // Clamp quantity to minimum (1) and handle non-numeric input gracefully
-                if (isNaN(quantity) || quantity < 1) {
-                    quantity = 1;
-                    quantityInput.value = 1;
-                }
+                let qty = parseInt(quantityInput.value) || 1;
+                const tier = pricingTiers.find(t => qty <= t.max);
+                const unitPrice = tier.price;
+                const total = qty * unitPrice;
 
-                const result = calculatePrice(quantity);
-
-                // Update the display elements
-                unitPriceDisplay.textContent = formatKES(result.unitPrice);
-                totalCostDisplay.textContent = result.totalCostText;
-                customizeButton.textContent = result.buttonText;
-                
-                // --- Prepare data for the customize page ---
-                const selectedColor = colorSelect.value;
-                const productName = document.querySelector('.product-title').textContent.trim();
-                
-                // Use the unitPrice and the raw total cost for URL parameters
-                let href = `customize_order.html?product=${encodeURIComponent(productName)}&qty=${quantity}&price=${result.unitPrice}&color=${selectedColor}`;
-                
-                // Update button href for customization page
-                customizeButton.href = href;
-
-
-                // Special visual handling for 501+
-                if (quantity > 500) {
-                     totalCostDisplay.style.color = 'gray';
-                     customizeButton.classList.remove('btn-primary');
-                     customizeButton.classList.add('btn-secondary');
-                     customizeButton.style.border = 'none';
-                     customizeButton.style.boxShadow = 'none';
-                     customizeButton.href = 'request_quote.html'; 
-                } else {
-                     totalCostDisplay.style.color = 'var(--primary-color)';
-                     customizeButton.classList.add('btn-primary');
-                     customizeButton.classList.remove('btn-secondary');
-                     customizeButton.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.1)';
-                }
+                unitPriceDisplay.textContent = formatKES(unitPrice);
+                totalCostDisplay.textContent = formatKES(total);
+        
+                // Return data for the cart
+                return { qty, unitPrice, total };
             }
+
+            // --- ADD TO CART LOGIC ---
+            addToCartBtn.addEventListener('click', () => {
+                const summary = updateOrderSummary();
+                const productName = document.querySelector('.product-title').textContent;
+        
+                const cartItem = {
+                    id: Date.now(), // Unique ID
+                    name: productName,
+                    color: colorSelect.value,
+                    quantity: summary.qty,
+                    price: summary.unitPrice,
+                    total: summary.total,
+                    // Note: Real file objects can't be saved in localStorage. 
+                    // In a real app, you'd upload to a server first.
+                    hasLogo: logoUpload.files.length > 0 
+                };
+
+                // Get existing cart or empty array
+                let cart = JSON.parse(localStorage.getItem('cart')) || [];
+                cart.push(cartItem);
+                localStorage.setItem('cart', JSON.stringify(cart));
+
+                // Update Nav Count
+                cartCount.textContent = cart.length;
+
+                // Show Success Popup
+                cartPopup.style.display = 'block';
+                setTimeout(() => { cartPopup.style.display = 'none'; }, 3000);
+                });
 
             quantityInput.addEventListener('input', updateOrderSummary);
-            colorSelect.addEventListener('change', updateOrderSummary); 
-            
-            // Initial run to set the correct price based on the default value (100)
+            colorSelect.addEventListener('change', updateOrderSummary);
             updateOrderSummary();
+            // ... inside your Add to Cart click listener ...
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart.push(cartItem);
+            localStorage.setItem('cart', JSON.stringify(cart));
+
+            // ADD THIS LINE HERE:
+            if (typeof updateCartCount === 'function') {
+                updateCartCount();
+            }
+
+            // Show Success Popup
+            cartPopup.style.display = 'block';
+            // ...        });
         });
     </script>
 </body>

@@ -8,94 +8,46 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <script src="header.js"></script>
     <style>
-        /* --- CSS Styles for Enhanced Checkout Page Appearance --- */
-        :root {
-            --primary-color: #5d2595; 
-        }
+        :root { --primary-color: #5d2595; }
         body { font-family: 'Open Sans', sans-serif; background-color: #f4f4f4; }
         .checkout-container { max-width: 800px; margin: 40px auto; padding: 20px; background: white; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
         h1 { font-family: 'Playfair Display', serif; font-size: 2em; color: #2c3e50; }
         h3 { color: var(--primary-color); border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 15px; }
 
-        /* Form styling */
         .form-group { margin-bottom: 20px; }
         .form-group label { display: block; margin-bottom: 8px; font-weight: bold; color: #333; }
         .form-group input, .form-group textarea { 
-            width: 100%; 
-            padding: 12px; 
-            border: 1px solid #ccc; 
-            border-radius: 6px;
-            font-size: 1em; 
-            box-sizing: border-box; 
-            transition: border-color 0.3s;
+            width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px;
+            font-size: 1em; box-sizing: border-box; transition: border-color 0.3s;
         }
-        .form-group input:focus, .form-group textarea:focus {
-            border-color: var(--primary-color);
-            outline: none;
-        }
+        .form-group input:focus, .form-group textarea:focus { border-color: var(--primary-color); outline: none; }
 
-        /* Summary Box Styling */
         .summary-box { 
-            background: #f0f8ff; 
-            padding: 20px; 
-            border-radius: 8px; 
-            margin-bottom: 30px; 
-            border: 1px solid #d0e7ff;
+            background: #f0f8ff; padding: 20px; border-radius: 8px; 
+            margin-bottom: 30px; border: 1px solid #d0e7ff;
         }
-        .summary-box p {
-            display: flex;
-            justify-content: space-between;
-            margin: 5px 0;
-            padding: 3px 0;
-        }
-        .summary-box strong {
-            font-weight: 700;
-        }
+        .summary-box p { display: flex; justify-content: space-between; margin: 5px 0; padding: 3px 0; }
         .summary-box p:last-child {
-            font-size: 1.3em;
-            font-weight: bold;
-            color: var(--primary-color); 
-            border-top: 1px solid #d0e7ff;
-            padding-top: 10px;
-            margin-top: 10px;
+            font-size: 1.3em; font-weight: bold; color: var(--primary-color); 
+            border-top: 1px solid #d0e7ff; padding-top: 10px; margin-top: 10px;
         }
 
-        /* Button Styling */
         #payBtn { 
-            background-color: var(--primary-color); 
-            color: white; 
-            padding: 15px 20px; 
-            border: none; 
-            border-radius: 8px; 
-            cursor: pointer; 
-            font-size: 1.1em; 
-            font-weight: 700;
-            width: 100%;
-            transition: background-color 0.3s, box-shadow 0.3s;
+            background-color: var(--primary-color); color: white; padding: 15px 20px; 
+            border: none; border-radius: 8px; cursor: pointer; font-size: 1.1em; 
+            font-weight: 700; width: 100%; transition: 0.3s;
             box-shadow: 0 4px 10px rgba(93, 37, 149, 0.3);
         }
-        #payBtn:hover {
-            background-color: #4a1e78;
-        }
-        #payBtn:disabled { 
-            background-color: #ccc; 
-            cursor: not-allowed; 
-            box-shadow: none;
-        }
-        #paymentMessage { 
-            margin-top: 15px; 
-            padding: 10px; 
-            border-radius: 4px; 
-            font-weight: bold; 
-            text-align: center;
-        }
+        #payBtn:hover { background-color: #4a1e78; }
+        #payBtn:disabled { background-color: #ccc; cursor: not-allowed; box-shadow: none; }
+        #paymentMessage { margin-top: 15px; padding: 15px; border-radius: 8px; font-weight: bold; text-align: center; line-height: 1.5; }
     </style>
 </head>
 <body>
     <header class="navbar"></header>
 
     <div class="checkout-container">
-        <h1>Customize & Checkout 🖊️</h1>
+        <h1>Finalize Your Order 🖊️</h1>
         
         <div class="summary-box">
             <h3>Order Summary</h3>
@@ -106,167 +58,131 @@
             <p><strong>Total: <span id="displayTotal">KES 0</span></strong></p>
         </div>
 
-        <form id="orderForm" enctype="multipart/form-data">
-            <div class="form-group">
-                <label for="logoUpload">Upload Logo (PNG, JPG, PDF)</label>
-                <input type="file" id="logoUpload" name="logo" accept="image/*,.pdf" required>
-            </div>
-
+        <form id="orderForm">
             <div class="form-group">
                 <label for="address">Shipping Address</label>
-                <textarea id="address" name="address" rows="3" required placeholder="Street, Building, City"></textarea>
+                <textarea id="address" name="address" rows="3" required placeholder="Street, Building, City, County"></textarea>
             </div>
 
             <div class="form-group">
-                <label for="phone">M-Pesa Phone Number (e.g., 2547XXXXXXXX)</label>
+                <label for="phone">M-Pesa Phone Number</label>
                 <input type="tel" id="phone" name="phone" placeholder="2547XXXXXXXX" required>
             </div>
 
             <button type="submit" id="payBtn">Confirm & Pay with M-Pesa</button>
-            <p id="paymentMessage"></p>
+            <div id="paymentMessage"></div>
         </form>
     </div>
 
     <script>
-        // --- Setup Variables ---
         const urlParams = new URLSearchParams(window.location.search);
-        
-        // FIX: Use decodeURIComponent to handle spaces/special characters in product name
         const product_name = decodeURIComponent(urlParams.get('product') || 'Unknown Product'); 
-        
-        // FIX: Use parseFloat() to ensure qty and price are treated as numbers for calculation
         const qty = parseFloat(urlParams.get('qty')) || 1; 
         const price = parseFloat(urlParams.get('price')) || 800;
         const color = urlParams.get('color') || 'N/A';
-        
-        // Recalculate total
         const total = qty * price;
 
-        // --- DOM Elements ---
         const orderForm = document.getElementById('orderForm');
         const payBtn = document.getElementById('payBtn');
         const messageElement = document.getElementById('paymentMessage');
 
-        // --- Initial Display (FIXED LOGIC) ---
+        // Initial Display
         document.getElementById('displayProduct').innerText = product_name;
         document.getElementById('displayColor').innerText = color;
-        document.getElementById('displayQty').innerText = qty.toLocaleString('en-US', { maximumFractionDigits: 0 }); // Format quantity
-        
-        // FIX: Display the retrieved Unit Price, formatted correctly.
-        document.getElementById('displayUnitPrice').innerText = `KES ${price.toFixed(2).toLocaleString('en-US')}`;
+        document.getElementById('displayQty').innerText = qty.toLocaleString();
+        document.getElementById('displayUnitPrice').innerText = `KES ${price.toLocaleString()}`;
+        document.getElementById('displayTotal').innerText = `KES ${total.toLocaleString()}`;
 
-        // FIX: Display the calculated Total, formatted correctly.
-        document.getElementById('displayTotal').innerText = `KES ${total.toFixed(2).toLocaleString('en-US')}`;
-        
-        /**
-         * Parses the JWT token to extract the user ID.
-         */
         function getUserIdFromToken(token) {
             try {
                 const base64Url = token.split('.')[1];
                 const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-                const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-                    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-                }).join(''));
-                return JSON.parse(jsonPayload).id;
-            } catch (e) {
-                return null;
-            }
+                return JSON.parse(atob(base64)).id;
+            } catch (e) { return null; }
         }
 
+        // --- STEP 3: Polling Logic ---
+        function startPolling(orderId) {
+            const pollInterval = setInterval(async () => {
+                try {
+                    const res = await fetch(`http://localhost:3001/api/orders/status/${orderId}`);
+                    const data = await res.json();
 
-        // --- Form Submission Handler ---
+                    if (data.status === 'Processing') {
+                        clearInterval(pollInterval);
+                        messageElement.style.background = '#e7f4e9';
+                        messageElement.style.color = '#1e4620';
+                        messageElement.innerHTML = `
+                            <strong>✅ Payment Successful!</strong><br>
+                            Your order is now being processed.<br>
+                            Customization takes <strong>2 days</strong>. You will receive an SMS when it's ready for pickup.
+                        `;
+                        // Clear cart
+                        localStorage.removeItem('cart');
+                        if(typeof updateCartCount === 'function') updateCartCount();
+                    }
+                } catch (err) { console.error("Polling error:", err); }
+            }, 3000);
+        }
+
         orderForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            
             const token = localStorage.getItem('authToken'); 
             const userId = getUserIdFromToken(token); 
 
-            // 1. --- AUTHENTICATION CHECK ---
-            if (!token) {
-                console.error('Authentication Error: Token not found in localStorage.');
+            if (!token || !userId) {
                 messageElement.style.color = 'red';
-                messageElement.textContent = '⛔ Session expired or not signed in. Please sign in to complete your order.';
-                setTimeout(() => { window.location.href = 'signin.html'; }, 1500);
-                return;
-             }
-            if (!userId) {
-                console.error('Authentication Error: Invalid or expired token. Could not extract User ID.');
-                messageElement.style.color = 'red';
-                messageElement.textContent = '⛔ Session corrupted or expired. Please sign in again.';
+                messageElement.textContent = '⛔ Please sign in to complete your order.';
                 setTimeout(() => { window.location.href = 'signin.html'; }, 1500);
                 return;
             }
 
-            // Lock button and set initial status
             payBtn.disabled = true;
-            payBtn.innerText = 'Processing...';
+            payBtn.innerText = 'Initializing M-Pesa...';
             messageElement.style.color = 'blue';
-            messageElement.textContent = 'Step 1 of 2: Creating your customized order...';
+            messageElement.textContent = 'Creating your order...';
 
-            // Prepare FormData for Order Creation (includes file)
-            const formData = new FormData(orderForm);
-            formData.append('productName', product_name);
-            formData.append('quantity', qty);
-            formData.append('unitPrice', price);
-            formData.append('color', color);
+            const payload = {
+                productName: product_name,
+                quantity: qty,
+                unitPrice: price,
+                color: color,
+                address: document.getElementById('address').value,
+                phone: document.getElementById('phone').value
+            };
 
             try {
-                // --- STEP 1: Create Order in DB (Server handles logo upload) ---
-                const orderResponse = await fetch('http://localhost:3001/api/orders/create', {
+                // 1. Create Order
+                const orderRes = await fetch('http://localhost:3001/api/orders/create', {
                     method: 'POST',
-                    headers: { 
-                        'Authorization': `Bearer ${token}` 
-                    },
-                    body: formData 
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify(payload)
                 });
                 
-                const orderData = await orderResponse.json();
-
-                if (!orderResponse.ok) {
-                    messageElement.style.color = 'red';
-                    messageElement.textContent = `❌ Order creation failed: ${orderData.message || 'Server error.'}`;
-                    return;
-                }
+                const orderData = await orderRes.json();
+                if (!orderRes.ok) throw new Error(orderData.message);
                 
-                const { orderId, amount } = orderData;
-                const phoneNumber = document.getElementById('phone').value;
-                
-                messageElement.textContent = `Step 2 of 2: Order #${orderId} created. Initiating KES ${amount.toFixed(2)} M-Pesa STK Push...`;
+                const { orderId } = orderData;
+                messageElement.textContent = `Order #${orderId} created. Please check your phone for M-Pesa PIN prompt...`;
 
-                // --- STEP 2: Initiate M-Pesa STK Push ---
-                const mpesaResponse = await fetch('http://localhost:3001/api/mpesa/stkpush', {
+                // 2. STK Push
+                const mpesaRes = await fetch('http://localhost:3001/api/mpesa/stkpush', {
                     method: 'POST',
-                    headers: { 
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}` 
-                    },
-                    body: JSON.stringify({
-                        phoneNumber: phoneNumber,
-                        orderId: orderId,
-                    })
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify({ phoneNumber: payload.phone, orderId: orderId })
                 });
-                
-                const mpesaData = await mpesaResponse.json();
-                
-                if(mpesaResponse.ok) {
-                    messageElement.style.color = 'green';
-                    messageElement.textContent = `✅ Success! M-Pesa prompt sent for KES ${amount.toFixed(2)}. Check your phone to enter PIN.`;
-                    orderForm.reset();
+
+                if(mpesaRes.ok) {
+                    startPolling(orderId); // Start waiting for PIN entry
                 } else {
-                    messageElement.style.color = 'orange';
-                    messageElement.textContent = `⚠️ Payment initiation failed: ${mpesaData.message || 'Check M-Pesa details.'}`;
+                    throw new Error("M-Pesa push failed.");
                 }
 
             } catch (err) {
-                console.error('Critical Fetch Error:', err);
                 messageElement.style.color = 'red';
-                messageElement.textContent = '🚨 Network error. Could not connect to the server.';
-            } finally {
-                if (messageElement.style.color !== 'green') {
-                    payBtn.disabled = false;
-                    payBtn.innerText = 'Confirm & Pay with M-Pesa';
-                }
+                messageElement.textContent = `❌ Error: ${err.message}`;
+                payBtn.disabled = false;
+                payBtn.innerText = 'Confirm & Pay with M-Pesa';
             }
         });
     </script>

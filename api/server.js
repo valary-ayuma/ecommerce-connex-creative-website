@@ -13,6 +13,8 @@ const base64 = require('base-64');
 const multer = require('multer');
 const path = require('path');
 const { log } = require('console');
+const cron = require('node-cron');
+const { sendPickupSMS } = require('./smsService');
 
 // Load environment variables immediately
 dotenv.config();
@@ -286,6 +288,7 @@ app.post('/api/mpesa/stkpush', authenticateToken, async (req, res) => {
             phoneNumber = '254' + phoneNumber;
         }
     }
+    
     // Fetch order to get amount
     const [orders] = await pool.query('SELECT total_amount FROM orders WHERE id = ? AND user_id = ?', [orderId, req.user.id]);
     
@@ -321,7 +324,15 @@ app.post('/api/mpesa/stkpush', authenticateToken, async (req, res) => {
         }, {
             headers: { 'Authorization': `Bearer ${token}` }
         });
-        console.log(`STK Push initiated successfully for Order ${orderId}. Response Code: ${stkResponse.data.ResponseCode}`);
+        if (stkResponse.data.ResponseCode === "0") {
+            const checkoutRequestID = stkResponse.data.CheckoutRequestID;
+            await pool.query(
+                'UPDATE orders SET mpesa_checkout_id = ? WHERE id = ?', 
+                [checkoutRequestID, orderId]
+            );
+            console.log(`✅ STK Push success. CheckoutID: ${checkoutRequestID}`);
+        }
+
         res.json({ message: 'M-Pesa STK Push sent.', data: stkResponse.data });
 
     } catch (error) {
@@ -333,23 +344,120 @@ app.post('/api/mpesa/stkpush', authenticateToken, async (req, res) => {
         }
         res.status(500).json({ message: 'Failed to initiate M-Pesa payment.' });
     }
+   
+    
 });
 
-// M-Pesa Callback
+// --- M-Pesa Callback URL (Ensure this is public, e.g., via Ngrok for local testing) ---
 app.post('/api/mpesa/callback', async (req, res) => {
-    const callbackData = req.body.Body.stkCallback;
-    console.log('M-Pesa Callback:', JSON.stringify(callbackData));
+    const { Body } = req.body;
 
-    if (callbackData.ResultCode === 0) {
-        // Payment Successful
-        // Extract Order ID from AccountReference in your logic or metadata
-        // For simplicity, we assume you parse the AccountReference manually or store the CheckoutRequestID
-        // In a real app, map CheckoutRequestID to OrderID in database
-        console.log("Payment Successful");
-        // Update Order status in DB to 'Paid' here
+    // ResultCode 0 means the user entered their PIN and the transaction was successful
+    if (Body.stkCallback.ResultCode === 0) {
+        // You should pass the orderId in the CheckoutID or as a URL query param
+        const checkoutRequestID = Body.stkCallback.CheckoutRequestID;
+
+        try {
+            // 1. Update order status and set the paid_at timestamp
+            // We calculate 'Ready' as 2 days from now
+            const [result] = await db.promise().execute(
+                `UPDATE orders 
+                 SET status = 'Processing', 
+                     paid_at = NOW() 
+                 WHERE mpesa_checkout_id = ?`, 
+                [checkoutRequestID]
+            );
+
+            console.log("Payment Successful. Order moved to Processing.");
+            
+            // 2. (Optional) Trigger an immediate "Thank you" SMS here
+            
+        } catch (error) {
+            console.error("DB Update Error:", error);
+        }
+    } else {
+        console.log("Payment cancelled or failed by user.");
     }
 
-    res.status(200).send();
+    // Always respond to Safaricom with a success message to stop them from retrying
+    res.json({ ResultCode: 0, ResultDesc: "Accepted" });
+});
+
+
+
+// Runs every hour to check for orders ready for pickup
+cron.schedule('0 * * * *', async () => {
+    try {
+        // Find orders older than 2 days that are still 'Processing'
+        const [orders] = await db.promise().execute(
+            `SELECT id, phone, productName FROM orders 
+             WHERE status = 'Processing' 
+             AND paid_at <= DATE_SUB(NOW(), INTERVAL 2 DAY)`
+        );
+
+        for (let order of orders) {
+            // 1. Update status to 'Ready'
+            await db.promise().execute(
+                "UPDATE orders SET status = 'Ready' WHERE id = ?", 
+                [order.id]
+            );
+
+            // 2. Send the Notification (Example SMS logic)
+            console.log(`Sending SMS to ${order.phone}: Your ${order.productName} is ready for pickup!`);
+        }
+    } catch (err) {
+        console.error("Cron Job Error:", err);
+    }
+});
+// --- Get Order Status for Frontend Polling ---
+app.get('/api/orders/status/:orderId', async (req, res) => {
+    const { orderId } = req.params;
+
+    try {
+        const [rows] = await db.promise().execute(
+            'SELECT status FROM orders WHERE id = ?', 
+            [orderId]
+        );
+
+        if (rows.length === 0) {
+            return res.status(404).json({ message: 'Order not found' });
+        }
+
+        // Return the current status (e.g., 'Pending', 'Processing', or 'Ready')
+        res.json({ status: rows[0].status });
+    } catch (error) {
+        console.error('Status check error:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+const cron = require('node-cron');
+const { sendPickupSMS } = require('./smsService');
+
+// Runs every hour
+cron.schedule('0 * * * *', async () => {
+    try {
+        // 1. Find 'Processing' orders paid more than 48 hours ago
+        const [orders] = await db.promise().execute(
+            `SELECT id, phone, productName FROM orders 
+             WHERE status = 'Processing' 
+             AND paid_at <= DATE_SUB(NOW(), INTERVAL 2 DAY)`
+        );
+
+        for (let order of orders) {
+            // 2. Update status to 'Ready' so they don't get messaged twice
+            await db.promise().execute(
+                "UPDATE orders SET status = 'Ready' WHERE id = ?", 
+                [order.id]
+            );
+
+            // 3. Send the actual SMS
+            await sendPickupSMS(order.phone, order.id, order.productName);
+            
+            console.log(`Notification sent for Order #${order.id}`);
+        }
+    } catch (err) {
+        console.error("Cron Job Error:", err);
+    }
 });
 
 const PORT = process.env.PORT || 3001;
