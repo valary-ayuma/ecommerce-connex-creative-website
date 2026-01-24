@@ -1,14 +1,15 @@
+
 const AfricasTalking = require('africastalking');
 
-// Initialize the SDK
+
+
+const sendPickupSMS = async (phoneNumber, orderId, productName) => {
+    // Initialize the SDK
 const at = AfricasTalking({
     apiKey: process.env.AT_API_KEY, 
     username: process.env.AT_USERNAME
 });
-
 const sms = at.SMS;
-
-const sendPickupSMS = async (phoneNumber, orderId, productName) => {
     // 1. Clean the number: Remove spaces or dashes
     let cleanNumber = phoneNumber.replace(/\s+/g, '');
 

@@ -1,5 +1,4 @@
 // server.js
-
 // --- 1. Imports ---
 const express = require('express');
 const mysql = require('mysql2'); 
@@ -15,6 +14,7 @@ const path = require('path');
 const { log } = require('console');
 const cron = require('node-cron');
 const { sendPickupSMS } = require('./smsService');
+const AfricasTalking = require('africastalking');
 
 // Load environment variables immediately
 dotenv.config();
@@ -73,15 +73,20 @@ pool.query('SELECT 1')
 // This function checks if a request has a valid JWT, protecting specific routes.
 const authenticateToken = (req, res, next) => {
     const authHeader = req.headers['authorization'];
-    // Format: "Bearer TOKEN_STRING"
     const token = authHeader && authHeader.split(' ')[1]; 
     
-    if (!token) return res.sendStatus(401); // Unauthorized
+    if (!token) {
+        // ADD RETURN HERE
+        return res.status(401).json({ message: "Unauthorized: No token provided" });
+    }
 
     jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-        if (err) return res.sendStatus(403); // Forbidden (e.g., token expired or invalid)
+        if (err) {
+            // ADD RETURN HERE
+            return res.status(403).json({ message: "Forbidden: Invalid or expired token" });
+        }
         req.user = user; 
-        next();
+        next(); // This only runs if there was no error
     });
 };
 
@@ -360,7 +365,7 @@ app.post('/api/mpesa/callback', async (req, res) => {
         try {
             // 1. Update order status and set the paid_at timestamp
             // We calculate 'Ready' as 2 days from now
-            const [result] = await db.promise().execute(
+            const [result] = await pool.execute(
                 `UPDATE orders 
                  SET status = 'Processing', 
                      paid_at = NOW() 
@@ -389,7 +394,7 @@ app.post('/api/mpesa/callback', async (req, res) => {
 cron.schedule('0 * * * *', async () => {
     try {
         // Find orders older than 2 days that are still 'Processing'
-        const [orders] = await db.promise().execute(
+        const [orders] = await pool.execute(
             `SELECT id, phone, productName FROM orders 
              WHERE status = 'Processing' 
              AND paid_at <= DATE_SUB(NOW(), INTERVAL 2 DAY)`
@@ -397,7 +402,7 @@ cron.schedule('0 * * * *', async () => {
 
         for (let order of orders) {
             // 1. Update status to 'Ready'
-            await db.promise().execute(
+            await pool.execute(
                 "UPDATE orders SET status = 'Ready' WHERE id = ?", 
                 [order.id]
             );
@@ -414,7 +419,7 @@ app.get('/api/orders/status/:orderId', async (req, res) => {
     const { orderId } = req.params;
 
     try {
-        const [rows] = await db.promise().execute(
+        const [rows] = await pool.execute(
             'SELECT status FROM orders WHERE id = ?', 
             [orderId]
         );
@@ -430,36 +435,83 @@ app.get('/api/orders/status/:orderId', async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 });
-const cron = require('node-cron');
-const { sendPickupSMS } = require('./smsService');
 
-// Runs every hour
+
+
+
 cron.schedule('0 * * * *', async () => {
     try {
-        // 1. Find 'Processing' orders paid more than 48 hours ago
-        const [orders] = await db.promise().execute(
-            `SELECT id, phone, productName FROM orders 
+        // Find orders that are 'Processing' and 2 days old
+        const [orders] = await pool.execute(
+            `SELECT id, phone FROM orders 
              WHERE status = 'Processing' 
              AND paid_at <= DATE_SUB(NOW(), INTERVAL 2 DAY)`
         );
 
         for (let order of orders) {
-            // 2. Update status to 'Ready' so they don't get messaged twice
-            await db.promise().execute(
-                "UPDATE orders SET status = 'Ready' WHERE id = ?", 
+            // Get item names for the SMS
+            const [items] = await pool.execute(
+                'SELECT product_name FROM order_items WHERE order_id = ?', 
                 [order.id]
             );
-
-            // 3. Send the actual SMS
-            await sendPickupSMS(order.phone, order.id, order.productName);
             
-            console.log(`Notification sent for Order #${order.id}`);
+            const itemSummary = items.map(i => i.product_name).join(', ');
+
+            // Send SMS
+            await sendPickupSMS(order.phone, order.id, itemSummary);
+
+            // Mark as Ready
+            await pool.execute("UPDATE orders SET status = 'Ready' WHERE id = ?", [order.id]);
         }
     } catch (err) {
-        console.error("Cron Job Error:", err);
+        console.error("Cron Error:", err);
     }
 });
 
+
+
+// 3. INITIALIZE AFRICA'S TALKING (Variables now exist)
+const at = AfricasTalking({
+    apiKey: process.env.AT_API_KEY,
+    username: process.env.AT_USERNAME
+});
+
+app.post('/api/orders/create-bulk', authenticateToken, async (req, res) => {
+    const { items, totalAmount, address, phone } = req.body;
+    const userId = req.user.id;
+
+    const connection = await pool.getConnection();
+    try {
+        await connection.beginTransaction();
+
+        // 1. Insert Parent Order
+        const [orderResult] = await connection.execute(
+            'INSERT INTO orders (user_id, total_amount, status, shipping_address, phone_number) VALUES (?, ?, ?, ?, ?)',
+            [userId, totalAmount, 'Pending', address, phone]
+        );
+        const orderId = orderResult.insertId;
+
+        // 2. Prepare and Insert Child Items
+        const itemValues = items.map(item => [
+            orderId, item.name, item.quantity, item.price, item.color
+        ]);
+
+        await connection.query(
+            'INSERT INTO order_items (order_id, product_name, quantity, unit_price, color) VALUES ?',
+            [itemValues]
+        );
+
+        await connection.commit();
+        res.status(201).json({ orderId: orderId, amount: totalAmount });
+
+    } catch (error) {
+        await connection.rollback();
+        console.error("Database Error:", error);
+        res.status(500).json({ message: "Server error creating bulk order" });
+    } finally {
+        connection.release();
+    }
+});
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);

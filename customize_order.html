@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Customize Order | Connex Creative</title>
+    <title>Checkout | Connex Creative</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <script src="header.js"></script>
@@ -14,84 +14,103 @@
         h1 { font-family: 'Playfair Display', serif; font-size: 2em; color: #2c3e50; }
         h3 { color: var(--primary-color); border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 15px; }
 
+        /* Item List Styling */
+        .order-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px dashed #ddd; font-size: 0.95em; }
+        .order-item span { color: #555; }
+        
         .form-group { margin-bottom: 20px; }
         .form-group label { display: block; margin-bottom: 8px; font-weight: bold; color: #333; }
         .form-group input, .form-group textarea { 
             width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px;
-            font-size: 1em; box-sizing: border-box; transition: border-color 0.3s;
+            font-size: 1em; box-sizing: border-box; transition: 0.3s;
         }
-        .form-group input:focus, .form-group textarea:focus { border-color: var(--primary-color); outline: none; }
 
         .summary-box { 
             background: #f0f8ff; padding: 20px; border-radius: 8px; 
             margin-bottom: 30px; border: 1px solid #d0e7ff;
         }
-        .summary-box p { display: flex; justify-content: space-between; margin: 5px 0; padding: 3px 0; }
-        .summary-box p:last-child {
-            font-size: 1.3em; font-weight: bold; color: var(--primary-color); 
-            border-top: 1px solid #d0e7ff; padding-top: 10px; margin-top: 10px;
+        .grand-total-box {
+            font-size: 1.4em; font-weight: bold; color: var(--primary-color); 
+            display: flex; justify-content: space-between;
+            border-top: 2px solid #d0e7ff; padding-top: 15px; margin-top: 15px;
         }
 
         #payBtn { 
             background-color: var(--primary-color); color: white; padding: 15px 20px; 
             border: none; border-radius: 8px; cursor: pointer; font-size: 1.1em; 
             font-weight: 700; width: 100%; transition: 0.3s;
-            box-shadow: 0 4px 10px rgba(93, 37, 149, 0.3);
         }
         #payBtn:hover { background-color: #4a1e78; }
-        #payBtn:disabled { background-color: #ccc; cursor: not-allowed; box-shadow: none; }
-        #paymentMessage { margin-top: 15px; padding: 15px; border-radius: 8px; font-weight: bold; text-align: center; line-height: 1.5; }
+        #payBtn:disabled { background-color: #ccc; cursor: not-allowed; }
+        #paymentMessage { margin-top: 15px; padding: 15px; border-radius: 8px; font-weight: bold; text-align: center; }
     </style>
 </head>
 <body>
     <header class="navbar"></header>
 
     <div class="checkout-container">
-        <h1>Finalize Your Order 🖊️</h1>
+        <h1>Complete Your Payment 💳</h1>
         
         <div class="summary-box">
-            <h3>Order Summary</h3>
-            <p>Product: <strong id="displayProduct">N/A</strong></p> 
-            <p>Color: <strong id="displayColor">N/A</strong></p>
-            <p>Quantity: <span id="displayQty">0</span></p>
-            <p>Unit Price: <span id="displayUnitPrice">KES 0</span></p>
-            <p><strong>Total: <span id="displayTotal">KES 0</span></strong></p>
+            <h3>Your Items</h3>
+            <div id="itemsContainer">
+                </div>
+            <div class="grand-total-box">
+                <span>Grand Total:</span>
+                <span id="displayGrandTotal">KES 0</span>
+            </div>
         </div>
 
         <form id="orderForm">
             <div class="form-group">
                 <label for="address">Shipping Address</label>
-                <textarea id="address" name="address" rows="3" required placeholder="Street, Building, City, County"></textarea>
+                <textarea id="address" name="address" rows="3" required placeholder="Building, Street, County"></textarea>
             </div>
 
             <div class="form-group">
-                <label for="phone">M-Pesa Phone Number</label>
+                <label for="phone">M-Pesa Number (254...)</label>
                 <input type="tel" id="phone" name="phone" placeholder="2547XXXXXXXX" required>
             </div>
 
-            <button type="submit" id="payBtn">Confirm & Pay with M-Pesa</button>
+            <button type="submit" id="payBtn">Pay Everything with M-Pesa</button>
             <div id="paymentMessage"></div>
         </form>
     </div>
 
     <script>
-        const urlParams = new URLSearchParams(window.location.search);
-        const product_name = decodeURIComponent(urlParams.get('product') || 'Unknown Product'); 
-        const qty = parseFloat(urlParams.get('qty')) || 1; 
-        const price = parseFloat(urlParams.get('price')) || 800;
-        const color = urlParams.get('color') || 'N/A';
-        const total = qty * price;
-
+        const itemsContainer = document.getElementById('itemsContainer');
+        const displayGrandTotal = document.getElementById('displayGrandTotal');
         const orderForm = document.getElementById('orderForm');
         const payBtn = document.getElementById('payBtn');
         const messageElement = document.getElementById('paymentMessage');
 
-        // Initial Display
-        document.getElementById('displayProduct').innerText = product_name;
-        document.getElementById('displayColor').innerText = color;
-        document.getElementById('displayQty').innerText = qty.toLocaleString();
-        document.getElementById('displayUnitPrice').innerText = `KES ${price.toLocaleString()}`;
-        document.getElementById('displayTotal').innerText = `KES ${total.toLocaleString()}`;
+        // 1. Load Everything from Cart
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let grandTotal = 0;
+
+        function displayOrder() {
+            if (cart.length === 0) {
+                window.location.href = 'cart.html'; // Send back if empty
+                return;
+            }
+
+            itemsContainer.innerHTML = '';
+            cart.forEach(item => {
+                grandTotal += item.total;
+                itemsContainer.innerHTML += `
+                    <div class="order-item">
+                        <div>
+                            <strong>${item.name}</strong><br>
+                            <small>Color: ${item.color} | Qty: ${item.quantity}</small>
+                        </div>
+                        <strong>KES ${item.total.toLocaleString()}</strong>
+                    </div>
+                `;
+            });
+            displayGrandTotal.innerText = `KES ${grandTotal.toLocaleString()}`;
+        }
+
+        displayOrder();
 
         function getUserIdFromToken(token) {
             try {
@@ -101,90 +120,89 @@
             } catch (e) { return null; }
         }
 
-        // --- STEP 3: Polling Logic ---
         function startPolling(orderId) {
             const pollInterval = setInterval(async () => {
                 try {
                     const res = await fetch(`http://localhost:3001/api/orders/status/${orderId}`);
                     const data = await res.json();
-
                     if (data.status === 'Processing') {
                         clearInterval(pollInterval);
                         messageElement.style.background = '#e7f4e9';
                         messageElement.style.color = '#1e4620';
-                        messageElement.innerHTML = `
-                            <strong>✅ Payment Successful!</strong><br>
-                            Your order is now being processed.<br>
-                            Customization takes <strong>2 days</strong>. You will receive an SMS when it's ready for pickup.
-                        `;
-                        // Clear cart
+                        messageElement.innerHTML = "✅ Payment Successful! Your custom items will be ready in 2 days.";
                         localStorage.removeItem('cart');
                         if(typeof updateCartCount === 'function') updateCartCount();
                     }
-                } catch (err) { console.error("Polling error:", err); }
+                } catch (err) { console.error(err); }
             }, 3000);
         }
 
-        orderForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const token = localStorage.getItem('authToken'); 
-            const userId = getUserIdFromToken(token); 
+    orderForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const token = localStorage.getItem('authToken');
+    
+    if (!token) {
+        alert("Please sign in first!");
+        return;
+    }
 
-            if (!token || !userId) {
-                messageElement.style.color = 'red';
-                messageElement.textContent = '⛔ Please sign in to complete your order.';
-                setTimeout(() => { window.location.href = 'signin.html'; }, 1500);
-                return;
-            }
+    payBtn.disabled = true;
+    payBtn.innerText = 'Processing...';
 
-            payBtn.disabled = true;
-            payBtn.innerText = 'Initializing M-Pesa...';
-            messageElement.style.color = 'blue';
-            messageElement.textContent = 'Creating your order...';
+    const payload = {
+        items: cart, 
+        totalAmount: grandTotal,
+        address: document.getElementById('address').value,
+        phone: document.getElementById('phone').value
+    };
 
-            const payload = {
-                productName: product_name,
-                quantity: qty,
-                unitPrice: price,
-                color: color,
-                address: document.getElementById('address').value,
-                phone: document.getElementById('phone').value
-            };
-
-            try {
-                // 1. Create Order
-                const orderRes = await fetch('http://localhost:3001/api/orders/create', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-                    body: JSON.stringify(payload)
-                });
-                
-                const orderData = await orderRes.json();
-                if (!orderRes.ok) throw new Error(orderData.message);
-                
-                const { orderId } = orderData;
-                messageElement.textContent = `Order #${orderId} created. Please check your phone for M-Pesa PIN prompt...`;
-
-                // 2. STK Push
-                const mpesaRes = await fetch('http://localhost:3001/api/mpesa/stkpush', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-                    body: JSON.stringify({ phoneNumber: payload.phone, orderId: orderId })
-                });
-
-                if(mpesaRes.ok) {
-                    startPolling(orderId); // Start waiting for PIN entry
-                } else {
-                    throw new Error("M-Pesa push failed.");
-                }
-
-            } catch (err) {
-                messageElement.style.color = 'red';
-                messageElement.textContent = `❌ Error: ${err.message}`;
-                payBtn.disabled = false;
-                payBtn.innerText = 'Confirm & Pay with M-Pesa';
-            }
+    try {
+        // 1. Create the Order
+        const orderRes = await fetch('http://localhost:3001/api/orders/create-bulk', {
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'application/json', 
+                'Authorization': `Bearer ${token}` 
+            },
+            body: JSON.stringify(payload)
         });
+
+        const orderData = await orderRes.json();
+
+        if (!orderRes.ok) {
+            throw new Error(orderData.message || "Failed to create order");
+        }
+
+        // 2. Initiate M-Pesa STK Push (Only if order was created)
+        const mpesaRes = await fetch('http://localhost:3001/api/mpesa/stkpush', {
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'application/json', 
+                'Authorization': `Bearer ${token}` 
+            },
+            body: JSON.stringify({ 
+                phoneNumber: payload.phone, 
+                orderId: orderData.orderId 
+            })
+        });
+
+        const mpesaData = await mpesaRes.json();
+
+        if (mpesaRes.ok) {
+            messageElement.style.color = 'blue';
+            messageElement.textContent = "Check your phone for the M-Pesa prompt!";
+            startPolling(orderData.orderId);
+        } else {
+            throw new Error(mpesaData.message || "M-Pesa push failed");
+        }
+
+    } catch (err) {
+        messageElement.style.color = 'red';
+        messageElement.textContent = `❌ ${err.message}`;
+        payBtn.disabled = false;
+        payBtn.innerText = 'Confirm and pay with M-Pesa';
+    }
+});    
     </script>
 </body>
 </html>
