@@ -49,3 +49,21 @@ ecommerce-connex-creative-website/
 ├── header.js
 ├── style.css
 └── logo.png
+
+Getting Started
+
+To run this project locally:
+
+bash
+git clone https://github.com/valary-ayuma/ecommerce-connex-creative-website.git
+cd ecommerce-connex-creative-website/api
+npm install
+
+Create a .env file inside api/ with your own configuration (database credentials, SMS provider credentials, and any other secrets server.js and smsService.js expect — do not commit this file).
+
+bash
+node server.js
+
+Then open index.html from the project root (or serve it with a local static server) to browse the storefront.
+
+ngrok is used during local development to expose the API for testing callbacks that need a public URL (e.g. SMS provider webhooks). It's optional for basic local development — only needed if you're testing those callback flows.
