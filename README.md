@@ -73,6 +73,3 @@ Then open `index.html` from the project root (or serve it with a local static se
 
 > `ngrok` is used during local development to expose the API for testing callbacks that need a public URL (e.g. SMS provider webhooks). It's optional for basic local development — only needed if you're testing those callback flows.
 
-## Live Site
-
-[connex-creative-brands.netlify.app](https://connex-creative-brands.netlify.app/)
