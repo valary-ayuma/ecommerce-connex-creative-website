@@ -27,30 +27,6 @@ Built end-to-end for a freelance client, this site lets customers browse a catal
 - **SMS Notifications:** `smsService.js` handles SMS-based notifications (e.g. order or quote confirmations) from the backend
 - **FAQ, Privacy, and Terms** pages
 
-## Project Structure
-
-ecommerce-connex-creative-website/
-├── api/ # Node.js backend
-│ ├── node_modules/
-│ ├── uploads/ # files uploaded via the customize-order flow
-│ ├── .env # environment config (not committed — see below)
-│ ├── package.json / package-lock.json
-│ ├── server.js # entry point
-│ └── smsService.js # SMS notification logic
-├── index.html
-├── product.html
-├── cart.html / bag.html
-├── signin.html / signup.html
-├── customize_order.html
-├── request_quote.html
-├── faq.html
-├── about.html / contact.html
-├── privacy.html / terms.html
-├── (per-product pages: shirt, hoodie, mug, cup, bottle, bag, bracelet,
-│ cape, calender, pen, umbrella, trail, book — each with matching image)
-├── header.js
-├── style.css
-└── logo.png
 
 
 ## Getting Started
