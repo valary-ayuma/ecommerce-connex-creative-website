@@ -1,5 +1,9 @@
 Connex Creative — Custom Merchandise E-Commerce Website
 
+Live Site
+
+connex-creative-brands.netlify.app
+
 An e-commerce website for a client selling customizable branded merchandise — apparel, drinkware, bags, and promotional items — with individual product pages, a cart, user accounts, and a bulk-order quote system.
 
 Overview
